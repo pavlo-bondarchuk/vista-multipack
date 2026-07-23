@@ -128,3 +128,13 @@ Status: passed.
   confirmed the cart contains one pack, seven real units, and the configured
   pack price.
 - PHP syntax and Git whitespace checks passed.
+
+## 2026-07-23 — Final price block styling
+
+Status: ready for publication.
+
+- Kept the bordered price details at their original content width.
+- Placed the pack order button on a separate line below the bordered details.
+- Preserved the full-width pack button behavior on small screens.
+- Prepared the plugin directory for publication as a standalone public
+  repository without site files or generated ZIP archives.

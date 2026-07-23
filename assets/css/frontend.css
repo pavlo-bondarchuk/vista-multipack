@@ -1,14 +1,14 @@
 .vista-multipack-price {
-	border: 1px solid currentColor;
 	margin: 0.75rem 0 1rem;
-	padding: 0.75rem 1rem;
 }
 
 .vista-multipack-price__details {
 	align-items: baseline;
-	display: flex;
+	display: inline-flex;
 	flex-wrap: wrap;
 	gap: 0.35rem 0.75rem;
+	border: 1px solid currentColor;
+	padding: 0.75rem 1rem;
 }
 
 .vista-multipack-price.is-selected {
