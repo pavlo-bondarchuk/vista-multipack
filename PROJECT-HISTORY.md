@@ -131,10 +131,14 @@ Status: passed.
 
 ## 2026-07-23 — Final price block styling
 
-Status: ready for publication.
+Status: published.
 
 - Kept the bordered price details at their original content width.
 - Placed the pack order button on a separate line below the bordered details.
 - Preserved the full-width pack button behavior on small screens.
 - Prepared the plugin directory for publication as a standalone public
   repository without site files or generated ZIP archives.
+- Published the standalone plugin repository at
+  `https://github.com/pavlo-bondarchuk/vista-multipack`.
+- Confirmed the public repository contains only the plugin source,
+  documentation and translation files.
