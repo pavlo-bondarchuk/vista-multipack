@@ -1,0 +1,110 @@
+# Project history
+
+## 2026-07-23 — Starting audit
+
+Status: completed before implementation.
+
+- The site runs WooCommerce 10.7.0 with 83 simple products and no variable
+  products.
+- Global WooCommerce stock management is enabled, but every existing product
+  currently has product-level stock management disabled.
+- `XML for Google Merchant Center` 4.3.0 is installed and is the current
+  WordPress.org release.
+- Product 21626 stores `_xfgmc_multipack = 7`.
+- Feed 1 stores `xfgmc_multipack = disabled`, so the feed plugin intentionally
+  skips `g:multipack`.
+- The Russian WPML translation of product 21626 has no multipack meta value.
+- The generated feed path is stored in the database, but the XML file is absent
+  from the restored local uploads directory.
+- KeyCRM reads order quantities, so pack lines must preserve the real unit
+  quantity instead of representing a pack as one stock unit.
+- The theme contains hard-coded bulk-price notices for selected product IDs.
+
+## 2026-07-23 — Approved architecture
+
+Status: approved.
+
+- Build the feature as an isolated custom plugin.
+- Provide standard unit and fixed-size pack purchase options.
+- Store the pack's real unit quantity in the WooCommerce cart and order.
+- Display pack counts to customers while retaining unit counts for stock,
+  refunds, and external integrations.
+- Keep the feed plugin unchanged and integrate through its public filters.
+- Preserve the standard feed offer and append a separate Merchant pack offer
+  with a total price, unique ID, pack landing link, and `g:multipack`.
+- Track only this plugin and the root `.gitignore` in Git.
+
+## 2026-07-23 — Implementation started
+
+Status: completed.
+
+- Initialized a Git repository at the WordPress root.
+- Added a whitelist `.gitignore` that tracks only `.gitignore` and
+  `wp-content/plugins/vista-multipack/**`.
+- Added the plugin bootstrap, product data model, admin fields, storefront
+  presentation, cart/order handling, WPML field configuration, and XML feed
+  compatibility layer.
+- Added Ukrainian and Russian translations for storefront, cart, order, admin,
+  and feed strings.
+- Kept the existing feed plugin files unchanged.
+
+## 2026-07-23 — Integration verification
+
+Status: passed.
+
+- Activated Vista Multipack 1.0.0 locally.
+- Confirmed migration of product 21626 from `_xfgmc_multipack = 7` to an
+  enabled pack with a size of seven. No commercial pack price was invented.
+- Confirmed that an enabled pack without a pack price does not render a price,
+  button, or feed offer.
+- Temporarily used a pack price of 4,200 UAH for testing and removed it after
+  the tests.
+- Confirmed Ukrainian and Russian product pages show localized pack price and
+  button text through WPML.
+- Confirmed one pack adds seven real units and remains a separate cart line
+  from a standard single-unit purchase.
+- Confirmed the cart displays one pack and seven total units.
+- Confirmed changing the cart from one pack to two packs stores 14 real units
+  and changes the subtotal from 4,200 UAH to 8,400 UAH.
+- Confirmed order item metadata stores mode, pack size, pack price, and the
+  human-readable pack count while order quantity remains seven units.
+- Confirmed native stock behavior with an isolated temporary product:
+  stock changed from 20 to 15 for one five-unit pack and returned to 20 when
+  stock was restored. The temporary product and order were deleted afterward.
+- Regenerated the real feed using the feed plugin's full generation command.
+  With the temporary test price, the valid XML contained both the original
+  offer and one pack offer:
+  `21626-multipack-7`, `4200 UAH`, and `<g:multipack>7</g:multipack>`.
+- Removed the temporary pack price and regenerated the feed again. The final
+  XML is valid and correctly contains no pack offer until an administrator
+  enters the real pack price.
+- PHP syntax checks passed for every plugin PHP file.
+- No Vista Multipack warnings, parse errors, or fatal errors were found in the
+  WordPress debug log.
+
+## 2026-07-23 — Compatibility findings
+
+- `XML for Google Merchant Center 4.3.0` emits repeated deprecation notices
+  from its own `XFGMC_Error_Log` constructor during feed generation.
+- Its `wp xfgmc quick` command reported success but produced an empty feed in
+  the restored local environment because it did not create the temporary
+  product ID list. The full `wp xfgmc generate --feed_id=1` command works and
+  was used for final verification.
+- KeyCRM emits existing warnings when an artificial test order has no customer,
+  payment, or shipping payload. These warnings are outside Vista Multipack.
+- Product-level stock management is disabled on all current catalog products.
+  Pack orders will carry correct unit quantities, but WooCommerce can only
+  reduce stock after stock management and a stock quantity are configured on
+  the relevant product.
+
+## 2026-07-23 — Final local state
+
+Status: ready for product configuration.
+
+- Plugin is active.
+- Product 21626 remains enabled with a pack size of seven inherited from the
+  existing Merchant field.
+- Its pack price is intentionally empty, so no unapproved price is shown or
+  exported.
+- The feed plugin and theme were not modified.
+- Git tracks only the root `.gitignore` and Vista Multipack files.

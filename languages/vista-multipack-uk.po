@@ -1,0 +1,83 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Vista Multipack 1.0.0\n"
+"Language: uk\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
+
+msgid "Vista Multipack requires WooCommerce to be active."
+msgstr "Для роботи Vista Multipack має бути активований WooCommerce."
+
+msgid "Enable pack purchase"
+msgstr "Увімкнути продаж пачкою"
+
+msgid "Shows a separate pack price and pack purchase button."
+msgstr "Показує окрему ціну пачки та кнопку замовлення пачки."
+
+msgid "Units per pack"
+msgstr "Кількість одиниць у пачці"
+
+msgid "The real WooCommerce quantity added for one pack."
+msgstr "Фактична кількість товару WooCommerce, яка додається як одна пачка."
+
+msgid "Pack price"
+msgstr "Ціна пачки"
+
+msgid "Total price for one complete pack. The pack offer remains hidden until this price is set."
+msgstr "Загальна ціна повної пачки. Поки ціна не задана, пропозиція пачки прихована."
+
+msgid "Vista Multipack feed integration was verified with XML for Google Merchant Center 4.3.0. Installed version: %s. Regenerate and validate the feed after updates."
+msgstr "Інтеграцію Vista Multipack перевірено з XML for Google Merchant Center 4.3.0. Встановлена версія: %s. Після оновлення перегенеруйте та перевірте фід."
+
+msgid "Pack of %d unit"
+msgid_plural "Pack of %d units"
+msgstr[0] "Пачка з %d одиниці"
+msgstr[1] "Пачка з %d одиниць"
+msgstr[2] "Пачка з %d одиниць"
+
+msgid "%s per unit in a pack"
+msgstr "%s за одиницю в пачці"
+
+msgid "Order pack (%1$d units) — %2$s"
+msgstr "Замовити пачку (%1$d од.) — %2$s"
+
+msgid "This pack offer is no longer available."
+msgstr "Ця пропозиція пачки більше не доступна."
+
+msgid "There is not enough stock for the selected number of packs."
+msgstr "Недостатньо товару для вибраної кількості пачок."
+
+msgid "Purchase option"
+msgstr "Варіант покупки"
+
+msgid "Pack"
+msgstr "Пачка"
+
+msgid "per pack"
+msgstr "за пачку"
+
+msgid "%d unit total"
+msgid_plural "%d units total"
+msgstr[0] "усього %d одиниця"
+msgstr[1] "усього %d одиниці"
+msgstr[2] "усього %d одиниць"
+
+msgid "%1$d pack(s) × %2$d units"
+msgstr "%1$d пач. × %2$d од."
+
+msgid "A pack quantity was changed to an invalid number of units. Please remove it and add the pack again."
+msgstr "Кількість пачки змінено на некоректну кількість одиниць. Видаліть її та додайте пачку знову."
+
+msgid "%1$d × %2$d units"
+msgstr "%1$d × %2$d од."
+
+msgid "%1$s — Pack of %2$d"
+msgstr "%1$s — Пачка з %2$d од."
+
+msgid "This offer contains %d identical unit."
+msgid_plural "This offer contains %d identical units."
+msgstr[0] "Ця пропозиція містить %d однакову одиницю товару."
+msgstr[1] "Ця пропозиція містить %d однакові одиниці товару."
+msgstr[2] "Ця пропозиція містить %d однакових одиниць товару."

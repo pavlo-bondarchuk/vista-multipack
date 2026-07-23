@@ -1,0 +1,52 @@
+.vista-multipack-price {
+	align-items: baseline;
+	border: 1px solid currentColor;
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.35rem 0.75rem;
+	margin: 0.75rem 0 1rem;
+	padding: 0.75rem 1rem;
+}
+
+.vista-multipack-price.is-selected {
+	box-shadow: 0 0 0 2px currentColor;
+}
+
+.vista-multipack-price__label,
+.vista-multipack-price__total {
+	font-weight: 700;
+}
+
+.vista-multipack-price__unit {
+	font-size: 0.875em;
+	opacity: 0.75;
+}
+
+.vista-multipack-button {
+	margin-inline-start: 0.5rem;
+}
+
+.vista-multipack-cart-badge {
+	border: 1px solid currentColor;
+	display: inline-block;
+	font-size: 0.75em;
+	line-height: 1;
+	margin-inline-start: 0.35rem;
+	padding: 0.25em 0.4em;
+	text-transform: uppercase;
+}
+
+.vista-multipack-cart-quantity {
+	display: block;
+	margin-top: 0.25rem;
+	opacity: 0.75;
+	white-space: nowrap;
+}
+
+@media (max-width: 680px) {
+	.vista-multipack-button {
+		display: block;
+		margin: 0.75rem 0 0;
+		width: 100%;
+	}
+}
