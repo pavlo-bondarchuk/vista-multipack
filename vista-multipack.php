@@ -2,7 +2,7 @@
 /**
  * Plugin Name: Vista Multipack
  * Description: Adds pack purchasing to WooCommerce products and compatible multipack offers to XML for Google Merchant Center.
- * Version: 1.0.0
+ * Version: 1.0.1
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'VISTA_MULTIPACK_VERSION', '1.0.0' );
+define( 'VISTA_MULTIPACK_VERSION', '1.0.1' );
 define( 'VISTA_MULTIPACK_FILE', __FILE__ );
 define( 'VISTA_MULTIPACK_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VISTA_MULTIPACK_URL', plugin_dir_url( __FILE__ ) );

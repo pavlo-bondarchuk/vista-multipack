@@ -108,3 +108,23 @@ Status: ready for product configuration.
   exported.
 - The feed plugin and theme were not modified.
 - Git tracks only the root `.gitignore` and Vista Multipack files.
+
+## 2026-07-23 — Pack button layout
+
+Status: passed.
+
+- Moved the pack order button from the standard WooCommerce cart button row
+  into the pack price block.
+- Kept the existing price text layout and placed the button below it.
+- Used a standalone WooCommerce POST form so the relocated button works without
+  JavaScript and still submits one pack as the configured number of real units.
+- Increased the plugin version to 1.0.1 to refresh the storefront stylesheet.
+- Confirmed in the browser that the button is inside the price block, below the
+  existing price details, and no duplicate pack button remains beside the
+  standard WooCommerce buttons.
+- Confirmed the desktop layout visually; the button keeps its natural width,
+  while the mobile rule expands it to the full block width.
+- Submitted the new form through a fresh isolated WooCommerce session and
+  confirmed the cart contains one pack, seven real units, and the configured
+  pack price.
+- PHP syntax and Git whitespace checks passed.

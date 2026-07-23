@@ -13,7 +13,6 @@ final class Vista_Multipack_Frontend {
 		add_action( 'wp_enqueue_scripts', array( __CLASS__, 'enqueue_styles' ) );
 		add_action( 'woocommerce_single_product_summary', array( __CLASS__, 'render_pack_price' ), 11 );
 		add_action( 'woocommerce_before_add_to_cart_button', array( __CLASS__, 'render_form_fields' ) );
-		add_action( 'woocommerce_after_add_to_cart_button', array( __CLASS__, 'render_pack_button' ) );
 	}
 
 	/**
@@ -50,7 +49,7 @@ final class Vista_Multipack_Frontend {
 		$is_selected        = isset( $_GET['vista_purchase'] ) && 'pack' === sanitize_key( wp_unslash( $_GET['vista_purchase'] ) );
 
 		printf(
-			'<div id="vista-multipack" class="vista-multipack-price%s"><span class="vista-multipack-price__label">%s</span><strong class="vista-multipack-price__total">%s</strong><span class="vista-multipack-price__unit">%s</span></div>',
+			'<div id="vista-multipack" class="vista-multipack-price%s"><div class="vista-multipack-price__details"><span class="vista-multipack-price__label">%s</span><strong class="vista-multipack-price__total">%s</strong><span class="vista-multipack-price__unit">%s</span></div>',
 			$is_selected ? ' is-selected' : '',
 			esc_html(
 				sprintf(
@@ -68,6 +67,10 @@ final class Vista_Multipack_Frontend {
 				)
 			)
 		);
+
+		self::render_pack_form( $product, $config, $pack_display_price );
+
+		echo '</div>';
 	}
 
 	/**
@@ -87,22 +90,33 @@ final class Vista_Multipack_Frontend {
 	}
 
 	/**
-	 * Render the second submit button.
+	 * Render a standalone pack form inside the pack price block.
 	 *
+	 * The standard WooCommerce cart form is rendered later in the product
+	 * summary. Keeping a separate form here lets the button remain visually
+	 * attached to the pack offer without relying on JavaScript.
+	 *
+	 * @param WC_Product $product            Product.
+	 * @param array      $config             Pack configuration.
+	 * @param float      $pack_display_price Pack price including display tax.
 	 * @return void
 	 */
-	public static function render_pack_button() {
-		global $product;
-
-		$config = Vista_Multipack_Product::get_config( $product );
+	private static function render_pack_form( $product, $config, $pack_display_price ) {
 		if ( ! $config || ! $product->is_purchasable() || ! $product->is_in_stock() ) {
 			return;
 		}
 
-		$pack_display_price = Vista_Multipack_Product::get_display_price( $product, $config );
+		$form_action = apply_filters( 'woocommerce_add_to_cart_form_action', $product->get_permalink() );
 
 		printf(
-			'<button type="submit" name="vista_purchase_mode" value="pack" class="button alt vista-multipack-button">%s</button>',
+			'<form class="vista-multipack-price__form" action="%s" method="post" enctype="multipart/form-data">',
+			esc_url( $form_action )
+		);
+		printf( '<input type="hidden" name="add-to-cart" value="%d">', absint( $product->get_id() ) );
+		echo '<input type="hidden" name="quantity" value="1">';
+		echo '<input type="hidden" name="vista_purchase_mode" value="pack">';
+		printf(
+			'<button type="submit" class="button alt vista-multipack-button">%s</button>',
 			esc_html(
 				sprintf(
 					/* translators: 1: units in a pack, 2: formatted pack price. */
@@ -112,5 +126,6 @@ final class Vista_Multipack_Frontend {
 				)
 			)
 		);
+		echo '</form>';
 	}
 }
