@@ -198,3 +198,4 @@ Status: passed.
 - Confirmed the Ukrainian product page renders
   `Комплект (7 од.) — 5,999 грн` without the removed details block.
 - Confirmed the button remains a compact 30-pixel-high secondary action.
+- Published version 1.0.3 to the public repository's `main` branch.
