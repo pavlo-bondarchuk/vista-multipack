@@ -160,3 +160,5 @@ Status: passed.
   real units with the 5,999 UAH complete pack total.
 - Regenerated and validated the Merchant XML with `21626-multipack-7`,
   `5999 UAH` and `<g:multipack>7</g:multipack>`.
+- Published the restored implementation to the public repository's `main`
+  branch.
