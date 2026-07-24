@@ -143,28 +143,20 @@ Status: published.
 - Confirmed the public repository contains only the plugin source,
   documentation and translation files.
 
-## 2026-07-24 — Compact storefront offer
+## 2026-07-24 — Storefront rollback
 
 Status: passed.
 
-- Removed the large pack summary containing the total pack price.
-- Replaced the prominent order CTA with a compact outlined purchase option.
-- Changed the visible value from the complete bundle total to the price of one
-  product package when purchasing the configured minimum quantity.
-- Kept the complete pack total in the submitted cart data, order calculations
-  and Merchant XML offer.
-- Added Ukrainian and Russian translations for the compact offer label.
-- Made translated products always use the default-language pack configuration,
-  preventing stale copied WPML metadata from showing a different quantity or
-  price.
-- Added plugin-level ignore rules for generated ZIP archives and macOS files.
-- Updated the local test product to five units and a 4,850 UAH pack total,
-  producing a visible 970 UAH per-package offer.
-- Confirmed visually that the old summary is absent and the new button renders
-  as a transparent 12 px label approximately 30 px high.
-- Confirmed through an isolated cart session that one click adds five real
-  units while retaining the 4,850 UAH complete pack total.
-- Regenerated and validated the Merchant XML. The pack offer now contains
-  `21626-multipack-5`, `4850 UAH` and `<g:multipack>5</g:multipack>`.
-- PHP syntax, translation catalog and Git whitespace checks passed.
-- Published plugin version 1.0.2 to the public repository's `main` branch.
+- Reverted the compact per-package label requested earlier on the same day.
+- Restored the bordered pack summary with the pack size, complete pack total
+  and per-unit comparison.
+- Restored the larger green pack order button below the summary.
+- Restored plugin version 1.0.1 and the previous translation catalogs.
+- Kept repository ignore rules for generated ZIP archives and macOS files.
+- Restored the local product to seven units and a 5,999 UAH pack total.
+- Confirmed visually that the bordered summary and larger green button match
+  the previous storefront implementation.
+- Confirmed through an isolated cart session that one pack again adds seven
+  real units with the 5,999 UAH complete pack total.
+- Regenerated and validated the Merchant XML with `21626-multipack-7`,
+  `5999 UAH` and `<g:multipack>7</g:multipack>`.
