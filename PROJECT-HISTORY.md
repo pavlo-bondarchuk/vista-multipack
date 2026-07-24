@@ -167,3 +167,4 @@ Status: passed.
 - Regenerated and validated the Merchant XML. The pack offer now contains
   `21626-multipack-5`, `4850 UAH` and `<g:multipack>5</g:multipack>`.
 - PHP syntax, translation catalog and Git whitespace checks passed.
+- Published plugin version 1.0.2 to the public repository's `main` branch.
