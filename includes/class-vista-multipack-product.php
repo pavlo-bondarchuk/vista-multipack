@@ -38,7 +38,10 @@ final class Vista_Multipack_Product {
 	}
 
 	/**
-	 * Read translated products from the default-language product when needed.
+	 * Read translated products from the default-language product.
+	 *
+	 * Pack configuration is commercial product data and must remain identical
+	 * across languages even if a translated post contains stale copied meta.
 	 *
 	 * @param int    $product_id Product ID.
 	 * @param string $meta_key   Meta key.
@@ -47,7 +50,7 @@ final class Vista_Multipack_Product {
 	private static function get_meta( $product_id, $meta_key ) {
 		$value = get_post_meta( $product_id, $meta_key, true );
 
-		if ( '' !== $value || ! has_filter( 'wpml_object_id' ) ) {
+		if ( ! has_filter( 'wpml_object_id' ) ) {
 			return $value;
 		}
 
@@ -55,7 +58,11 @@ final class Vista_Multipack_Product {
 		$source_id        = apply_filters( 'wpml_object_id', $product_id, 'product', false, $default_language );
 
 		if ( $source_id && (int) $source_id !== (int) $product_id ) {
-			return get_post_meta( $source_id, $meta_key, true );
+			$source_value = get_post_meta( $source_id, $meta_key, true );
+
+			if ( '' !== $source_value ) {
+				return $source_value;
+			}
 		}
 
 		return $value;

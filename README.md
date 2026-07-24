@@ -16,6 +16,10 @@ stores the real number of product units in the cart and order, so native stock
 reduction, cancellations, refunds, and order integrations continue to use unit
 quantities.
 
+On the product page, the plugin shows a compact purchase option with the price
+of one product package and the minimum pack quantity. The complete pack total
+is used when the option is submitted and remains visible in the cart and order.
+
 Product-level stock management and an actual stock quantity must be enabled if
 WooCommerce is expected to reduce stock. The plugin does not invent or enable
 stock values for existing products.

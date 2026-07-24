@@ -1,6 +1,9 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Vista Multipack 1.0.0\n"
+"Project-Id-Version: Vista Multipack 1.0.2\n"
+"PO-Revision-Date: 2026-07-24 00:00+0300\n"
+"Last-Translator: Vista Health\n"
+"Language-Team: Ukrainian\n"
 "Language: uk\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,6 +45,9 @@ msgstr "%s за одиницю в пачці"
 
 msgid "Order pack (%1$d units) — %2$s"
 msgstr "Замовити пачку (%1$d од.) — %2$s"
+
+msgid "%1$s per package · from %2$d units"
+msgstr "%1$s за пачку · від %2$d од."
 
 msgid "This pack offer is no longer available."
 msgstr "Ця пропозиція пачки більше не доступна."
