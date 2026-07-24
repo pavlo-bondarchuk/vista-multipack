@@ -185,3 +185,4 @@ Status: passed.
 - Regenerated and validated feed #1. The set offer remains
   `21626-multipack-7`, uses the localized set title, costs `5999 UAH` and keeps
   `<g:multipack>7</g:multipack>`.
+- Published version 1.0.2 to the public repository's `main` branch.
