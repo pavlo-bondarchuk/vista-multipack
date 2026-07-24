@@ -1,36 +1,42 @@
 .vista-multipack-price {
-	margin: 0.75rem 0 1rem;
-}
-
-.vista-multipack-price__details {
-	align-items: baseline;
 	display: inline-flex;
-	flex-wrap: wrap;
-	gap: 0.35rem 0.75rem;
-	border: 1px solid currentColor;
-	padding: 0.75rem 1rem;
-}
-
-.vista-multipack-price.is-selected {
-	box-shadow: 0 0 0 2px currentColor;
-}
-
-.vista-multipack-price__label,
-.vista-multipack-price__total {
-	font-weight: 700;
-}
-
-.vista-multipack-price__unit {
-	font-size: 0.875em;
-	opacity: 0.75;
+	margin: 0.5rem 0 1rem;
 }
 
 .vista-multipack-price__form {
-	margin-top: 0.75rem;
+	margin: 0;
 }
 
 .vista-multipack-price .vista-multipack-button {
+	appearance: none;
+	background: transparent !important;
+	border: 1px solid currentColor !important;
+	border-radius: 0.4rem;
+	box-shadow: none !important;
+	color: inherit !important;
+	cursor: pointer;
+	font: inherit;
+	font-size: 0.75rem !important;
+	font-weight: 500 !important;
+	height: auto !important;
+	letter-spacing: 0;
+	line-height: 1.2 !important;
 	margin: 0;
+	min-height: 0 !important;
+	padding: 0.45rem 0.7rem !important;
+	text-transform: none !important;
+	white-space: nowrap;
+}
+
+.vista-multipack-price .vista-multipack-button:hover,
+.vista-multipack-price .vista-multipack-button:focus-visible {
+	background: rgb(0 0 0 / 4%) !important;
+	opacity: 0.8;
+}
+
+.vista-multipack-price.is-selected .vista-multipack-button {
+	outline: 2px solid currentColor;
+	outline-offset: 2px;
 }
 
 .vista-multipack-cart-badge {
@@ -48,10 +54,4 @@
 	margin-top: 0.25rem;
 	opacity: 0.75;
 	white-space: nowrap;
-}
-
-@media (max-width: 680px) {
-	.vista-multipack-price .vista-multipack-button {
-		width: 100%;
-	}
 }

@@ -1,17 +1,17 @@
 # Vista Multipack
 
 WooCommerce extension for selling a simple product either as one unit or as a
-fixed-size pack.
+fixed-size set.
 
 ## Product data
 
 The **General > Pricing** product panel contains:
 
-- Enable pack purchase
-- Units per pack
-- Pack price (the total for one pack)
+- Enable set purchase
+- Units per set
+- Set price (the total for one set)
 
-The pack option is available only when all three values are valid. WooCommerce
+The set option is available only when all three values are valid. WooCommerce
 stores the real number of product units in the cart and order, so native stock
 reduction, cancellations, refunds, and order integrations continue to use unit
 quantities.
@@ -23,8 +23,8 @@ stock values for existing products.
 ## Google Merchant feed
 
 When `XML for Google Merchant Center` is active, the plugin keeps the standard
-single-unit offer and appends a second offer for the pack. The pack offer has a
-unique ID, total pack price, pack landing link, and `g:multipack`.
+single-unit offer and appends a second offer for the set. The set offer has a
+unique ID, total set price, set landing link, and `g:multipack`.
 
 Compatibility is verified with `XML for Google Merchant Center` 4.3.0.
 Regenerate the current feed with:

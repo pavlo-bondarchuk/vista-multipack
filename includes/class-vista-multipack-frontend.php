@@ -32,7 +32,7 @@ final class Vista_Multipack_Frontend {
 	}
 
 	/**
-	 * Show the pack total and per-unit comparison next to the regular price.
+	 * Show a compact set purchase option next to the regular price.
 	 *
 	 * @return void
 	 */
@@ -45,27 +45,11 @@ final class Vista_Multipack_Frontend {
 		}
 
 		$pack_display_price = Vista_Multipack_Product::get_display_price( $product, $config );
-		$unit_pack_price    = $pack_display_price / $config['size'];
 		$is_selected        = isset( $_GET['vista_purchase'] ) && 'pack' === sanitize_key( wp_unslash( $_GET['vista_purchase'] ) );
 
 		printf(
-			'<div id="vista-multipack" class="vista-multipack-price%s"><div class="vista-multipack-price__details"><span class="vista-multipack-price__label">%s</span><strong class="vista-multipack-price__total">%s</strong><span class="vista-multipack-price__unit">%s</span></div>',
-			$is_selected ? ' is-selected' : '',
-			esc_html(
-				sprintf(
-					/* translators: %d: number of units in a pack. */
-					_n( 'Pack of %d unit', 'Pack of %d units', $config['size'], 'vista-multipack' ),
-					$config['size']
-				)
-			),
-			wp_kses_post( wc_price( $pack_display_price ) ),
-			esc_html(
-				sprintf(
-					/* translators: %s: formatted price per unit. */
-					__( '%s per unit in a pack', 'vista-multipack' ),
-					wp_strip_all_tags( wc_price( $unit_pack_price ) )
-				)
-			)
+			'<div id="vista-multipack" class="vista-multipack-price%s">',
+			$is_selected ? ' is-selected' : ''
 		);
 
 		self::render_pack_form( $product, $config, $pack_display_price );
@@ -116,12 +100,11 @@ final class Vista_Multipack_Frontend {
 		echo '<input type="hidden" name="quantity" value="1">';
 		echo '<input type="hidden" name="vista_purchase_mode" value="pack">';
 		printf(
-			'<button type="submit" class="button alt vista-multipack-button">%s</button>',
+			'<button type="submit" class="vista-multipack-button">%s</button>',
 			esc_html(
 				sprintf(
-					/* translators: 1: units in a pack, 2: formatted pack price. */
-					__( 'Order pack (%1$d units) — %2$s', 'vista-multipack' ),
-					$config['size'],
+					/* translators: %s: formatted total set price. */
+					__( 'Order set — %s', 'vista-multipack' ),
 					wp_strip_all_tags( wc_price( $pack_display_price ) )
 				)
 			)

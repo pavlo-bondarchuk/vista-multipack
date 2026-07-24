@@ -162,3 +162,26 @@ Status: passed.
   `5999 UAH` and `<g:multipack>7</g:multipack>`.
 - Published the restored implementation to the public repository's `main`
   branch.
+
+## 2026-07-24 — Set terminology and compact button
+
+Status: passed.
+
+- Removed `vista-multipack-price__details` from the product page.
+- Kept the set purchase form and complete set price, but removed the unit count
+  from the button label.
+- Restyled the button as a compact outlined secondary action.
+- Replaced customer-facing and administration terminology from pack to set in
+  Ukrainian, Russian and English source strings.
+- Kept technical multipack identifiers unchanged for cart data, compatibility
+  and Google Merchant XML.
+- Increased the plugin version to 1.0.2.
+- Confirmed on the Ukrainian and Russian product pages that the details block is
+  absent and the compact button displays the complete set price without a unit
+  count in parentheses.
+- Confirmed the Ukrainian cart shows a separate set line, one customer-facing
+  set, seven real stock units and the configured 5,999 UAH set total.
+- Confirmed the Ukrainian administration labels use set terminology.
+- Regenerated and validated feed #1. The set offer remains
+  `21626-multipack-7`, uses the localized set title, costs `5999 UAH` and keeps
+  `<g:multipack>7</g:multipack>`.

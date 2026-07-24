@@ -26,16 +26,16 @@ final class Vista_Multipack_Admin {
 		woocommerce_wp_checkbox(
 			array(
 				'id'          => Vista_Multipack_Product::META_ENABLED,
-				'label'       => __( 'Enable pack purchase', 'vista-multipack' ),
-				'description' => __( 'Shows a separate pack price and pack purchase button.', 'vista-multipack' ),
+				'label'       => __( 'Enable set purchase', 'vista-multipack' ),
+				'description' => __( 'Shows a separate set price and set purchase button.', 'vista-multipack' ),
 			)
 		);
 
 		woocommerce_wp_text_input(
 			array(
 				'id'                => Vista_Multipack_Product::META_SIZE,
-				'label'             => __( 'Units per pack', 'vista-multipack' ),
-				'description'       => __( 'The real WooCommerce quantity added for one pack.', 'vista-multipack' ),
+				'label'             => __( 'Units per set', 'vista-multipack' ),
+				'description'       => __( 'The real WooCommerce quantity added for one set.', 'vista-multipack' ),
 				'type'              => 'number',
 				'desc_tip'          => true,
 				'custom_attributes' => array(
@@ -48,8 +48,8 @@ final class Vista_Multipack_Admin {
 		woocommerce_wp_text_input(
 			array(
 				'id'          => Vista_Multipack_Product::META_PRICE,
-				'label'       => __( 'Pack price', 'vista-multipack' ) . ' (' . get_woocommerce_currency_symbol() . ')',
-				'description' => __( 'Total price for one complete pack. The pack offer remains hidden until this price is set.', 'vista-multipack' ),
+				'label'       => __( 'Set price', 'vista-multipack' ) . ' (' . get_woocommerce_currency_symbol() . ')',
+				'description' => __( 'Total price for one complete set. The set offer remains hidden until this price is set.', 'vista-multipack' ),
 				'type'        => 'text',
 				'data_type'   => 'price',
 				'desc_tip'    => true,

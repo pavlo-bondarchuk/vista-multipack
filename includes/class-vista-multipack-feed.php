@@ -80,7 +80,7 @@ final class Vista_Multipack_Feed {
 			'title',
 			sprintf(
 				/* translators: 1: product title, 2: units in pack. */
-				__( '%1$s — Pack of %2$d', 'vista-multipack' ),
+				__( '%1$s — Set of %2$d', 'vista-multipack' ),
 				$base_title,
 				$size
 			)

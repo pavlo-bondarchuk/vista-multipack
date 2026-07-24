@@ -57,7 +57,7 @@ final class Vista_Multipack_Cart {
 
 		$config = Vista_Multipack_Product::get_config( $product_id );
 		if ( ! $config ) {
-			wc_add_notice( __( 'This pack offer is no longer available.', 'vista-multipack' ), 'error' );
+			wc_add_notice( __( 'This set offer is no longer available.', 'vista-multipack' ), 'error' );
 			return false;
 		}
 
@@ -65,7 +65,7 @@ final class Vista_Multipack_Cart {
 		$unit_quantity = max( 1, wc_stock_amount( $quantity ) ) * $config['size'];
 
 		if ( $product && $product->managing_stock() && ! $product->has_enough_stock( $unit_quantity ) ) {
-			wc_add_notice( __( 'There is not enough stock for the selected number of packs.', 'vista-multipack' ), 'error' );
+			wc_add_notice( __( 'There is not enough stock for the selected number of sets.', 'vista-multipack' ), 'error' );
 			return false;
 		}
 
@@ -152,7 +152,7 @@ final class Vista_Multipack_Cart {
 			'key'   => __( 'Purchase option', 'vista-multipack' ),
 			'value' => sprintf(
 				/* translators: %d: number of units in one pack. */
-				_n( 'Pack of %d unit', 'Pack of %d units', $cart_item[ self::ITEM_SIZE ], 'vista-multipack' ),
+				_n( 'Set of %d unit', 'Set of %d units', $cart_item[ self::ITEM_SIZE ], 'vista-multipack' ),
 				$cart_item[ self::ITEM_SIZE ]
 			),
 		);
@@ -171,7 +171,7 @@ final class Vista_Multipack_Cart {
 	public static function render_cart_item_name( $name, $cart_item, $cart_item_key ) {
 		unset( $cart_item_key );
 		return self::is_pack_item( $cart_item )
-			? $name . ' <span class="vista-multipack-cart-badge">' . esc_html__( 'Pack', 'vista-multipack' ) . '</span>'
+			? $name . ' <span class="vista-multipack-cart-badge">' . esc_html__( 'Set', 'vista-multipack' ) . '</span>'
 			: $name;
 	}
 
@@ -199,7 +199,7 @@ final class Vista_Multipack_Cart {
 			)
 		);
 
-		return wc_price( $total ) . ' <small>' . esc_html__( 'per pack', 'vista-multipack' ) . '</small>';
+		return wc_price( $total ) . ' <small>' . esc_html__( 'per set', 'vista-multipack' ) . '</small>';
 	}
 
 	/**
@@ -285,7 +285,7 @@ final class Vista_Multipack_Cart {
 			esc_html(
 				sprintf(
 					/* translators: 1: pack count, 2: units per pack. */
-					__( '%1$d pack(s) × %2$d units', 'vista-multipack' ),
+					__( '%1$d set(s) × %2$d units', 'vista-multipack' ),
 					$pack_count,
 					$size
 				)
@@ -306,7 +306,7 @@ final class Vista_Multipack_Cart {
 
 			$size = (int) $cart_item[ self::ITEM_SIZE ];
 			if ( $size < 2 || (int) $cart_item['quantity'] % $size !== 0 ) {
-				wc_add_notice( __( 'A pack quantity was changed to an invalid number of units. Please remove it and add the pack again.', 'vista-multipack' ), 'error' );
+				wc_add_notice( __( 'A set quantity was changed to an invalid number of units. Please remove it and add the set again.', 'vista-multipack' ), 'error' );
 			}
 		}
 	}
@@ -337,7 +337,7 @@ final class Vista_Multipack_Cart {
 		$item->add_meta_data( '_vista_pack_size', $size, true );
 		$item->add_meta_data( '_vista_pack_price', wc_format_decimal( $values[ self::ITEM_PRICE ] ), true );
 		$item->add_meta_data(
-			__( 'Pack', 'vista-multipack' ),
+			__( 'Set', 'vista-multipack' ),
 			sprintf(
 				/* translators: 1: number of packs, 2: units in each pack. */
 				__( '%1$d × %2$d units', 'vista-multipack' ),
