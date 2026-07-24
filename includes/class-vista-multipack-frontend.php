@@ -103,8 +103,9 @@ final class Vista_Multipack_Frontend {
 			'<button type="submit" class="vista-multipack-button">%s</button>',
 			esc_html(
 				sprintf(
-					/* translators: %s: formatted total set price. */
-					__( 'Order set — %s', 'vista-multipack' ),
+					/* translators: 1: units in the set, 2: formatted total set price. */
+					__( 'Set (%1$d units) — %2$s', 'vista-multipack' ),
+					$config['size'],
 					wp_strip_all_tags( wc_price( $pack_display_price ) )
 				)
 			)

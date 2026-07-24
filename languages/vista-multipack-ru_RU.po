@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Vista Multipack 1.0.2\n"
+"Project-Id-Version: Vista Multipack 1.0.3\n"
 "PO-Revision-Date: 2026-07-24 00:00+0300\n"
 "Last-Translator: Vista Health\n"
 "Language-Team: Russian\n"
@@ -40,8 +40,8 @@ msgstr[0] "Комплект из %d единицы"
 msgstr[1] "Комплект из %d единиц"
 msgstr[2] "Комплект из %d единиц"
 
-msgid "Order set — %s"
-msgstr "Заказать комплект — %s"
+msgid "Set (%1$d units) — %2$s"
+msgstr "Комплект (%1$d ед.) — %2$s"
 
 msgid "This set offer is no longer available."
 msgstr "Это предложение комплекта больше недоступно."

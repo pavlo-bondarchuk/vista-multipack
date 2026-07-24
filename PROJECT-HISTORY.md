@@ -186,3 +186,15 @@ Status: passed.
   `21626-multipack-7`, uses the localized set title, costs `5999 UAH` and keeps
   `<g:multipack>7</g:multipack>`.
 - Published version 1.0.2 to the public repository's `main` branch.
+
+## 2026-07-24 — Set quantity in the purchase button
+
+Status: passed.
+
+- Changed the compact purchase button to show the set size in abbreviated
+  customer-facing form together with the complete set price.
+- Kept the configured set size dynamic for each product.
+- Increased the plugin version to 1.0.3.
+- Confirmed the Ukrainian product page renders
+  `Комплект (7 од.) — 5,999 грн` without the removed details block.
+- Confirmed the button remains a compact 30-pixel-high secondary action.
