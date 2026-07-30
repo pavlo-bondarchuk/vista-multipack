@@ -16,7 +16,7 @@ final class Vista_Multipack_Feed {
 	}
 
 	/**
-	 * Clone the standard offer and turn the clone into a Merchant-valid pack.
+	 * Clone the standard offer as one independently purchasable set-rate unit.
 	 *
 	 * @param string $result_xml Existing complete item XML.
 	 * @param array  $data       Feed plugin offer context.
@@ -62,74 +62,55 @@ final class Vista_Multipack_Feed {
 			return $result_xml;
 		}
 
-		$pack_item = $items->item( 0 )->cloneNode( true );
-		if ( ! $pack_item ) {
+		$base_item = $items->item( 0 );
+		self::remove_google_value( $base_item, 'multipack' );
+
+		$unit_item = $base_item->cloneNode( true );
+		if ( ! $unit_item ) {
 			return $result_xml;
 		}
 
 		$size               = (int) $config['size'];
-		$pack_display_price = Vista_Multipack_Product::get_display_price( $product, $config );
-		$base_id            = self::get_google_value( $pack_item, 'id' );
-		$base_title         = self::get_google_value( $pack_item, 'title' );
-		$base_description   = self::get_google_value( $pack_item, 'description' );
+		$unit_display_price = Vista_Multipack_Product::get_unit_display_price( $product, $config );
+		$base_id            = self::get_google_value( $unit_item, 'id' );
+		$base_title         = self::get_google_value( $unit_item, 'title' );
+		$base_description   = self::get_google_value( $unit_item, 'description' );
 
-		self::set_google_value( $document, $pack_item, 'id', $base_id . '-multipack-' . $size );
+		self::set_google_value( $document, $unit_item, 'id', $base_id . '-set-unit-' . $size );
 		self::set_google_value(
 			$document,
-			$pack_item,
+			$unit_item,
 			'title',
 			sprintf(
-				/* translators: 1: product title, 2: units in pack. */
-				__( '%1$s — Set of %2$d', 'vista-multipack' ),
-				$base_title,
-				$size
+				/* translators: %s: product title. */
+				__( '%s — One unit at set price', 'vista-multipack' ),
+				$base_title
 			)
 		);
 		self::set_google_value(
 			$document,
-			$pack_item,
+			$unit_item,
 			'description',
 			trim(
 				$base_description . ' ' .
-				sprintf(
-					/* translators: %d: units in pack. */
-					_n( 'This offer contains %d identical unit.', 'This offer contains %d identical units.', $size, 'vista-multipack' ),
-					$size
-				)
+				__( 'This offer contains one independently purchasable unit at the set-equivalent unit price.', 'vista-multipack' )
 			)
 		);
-		self::set_google_value( $document, $pack_item, 'link', Vista_Multipack_Product::get_pack_url( $product ) );
+		self::set_google_value( $document, $unit_item, 'link', Vista_Multipack_Product::get_unit_url( $product ) );
 		self::set_google_value(
 			$document,
-			$pack_item,
+			$unit_item,
 			'price',
-			wc_format_decimal( $pack_display_price, wc_get_price_decimals() ) . ' ' . get_woocommerce_currency()
+			wc_format_decimal( $unit_display_price, wc_get_price_decimals() ) . ' ' . get_woocommerce_currency()
 		);
-		self::remove_google_value( $pack_item, 'sale_price' );
-		self::remove_google_value( $pack_item, 'sale_price_effective_date' );
-		self::set_google_value( $document, $pack_item, 'multipack', (string) $size );
+		self::remove_google_value( $unit_item, 'sale_price' );
+		self::remove_google_value( $unit_item, 'sale_price_effective_date' );
+		self::remove_google_value( $unit_item, 'multipack' );
 
-		if ( $product->managing_stock() ) {
-			$stock_quantity = (int) $product->get_stock_quantity();
-			self::set_google_value(
-				$document,
-				$pack_item,
-				'availability',
-				$stock_quantity >= $size ? 'in_stock' : 'out_of_stock'
-			);
+		$base_xml = $document->saveXML( $base_item );
+		$unit_xml = $document->saveXML( $unit_item );
 
-			if ( self::has_google_value( $pack_item, 'quantity' ) ) {
-				self::set_google_value(
-					$document,
-					$pack_item,
-					'quantity',
-					(string) max( 0, (int) floor( $stock_quantity / $size ) )
-				);
-			}
-		}
-
-		$pack_xml = $document->saveXML( $pack_item );
-		return $pack_xml ? $result_xml . $pack_xml : $result_xml;
+		return $base_xml && $unit_xml ? $base_xml . $unit_xml : $result_xml;
 	}
 
 	/**
@@ -142,17 +123,6 @@ final class Vista_Multipack_Feed {
 	private static function get_google_value( $item, $localname ) {
 		$nodes = $item->getElementsByTagNameNS( self::GOOGLE_NAMESPACE, $localname );
 		return $nodes->length ? $nodes->item( 0 )->textContent : '';
-	}
-
-	/**
-	 * Whether an item contains a namespaced element.
-	 *
-	 * @param DOMElement $item      Item.
-	 * @param string     $localname Local tag name.
-	 * @return bool
-	 */
-	private static function has_google_value( $item, $localname ) {
-		return $item->getElementsByTagNameNS( self::GOOGLE_NAMESPACE, $localname )->length > 0;
 	}
 
 	/**

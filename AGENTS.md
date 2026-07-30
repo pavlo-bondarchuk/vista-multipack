@@ -20,8 +20,8 @@ Read the following documents before changing behavior:
 
 - `class-vista-multipack-product.php` owns validated product configuration and
   WPML fallback reads.
-- `class-vista-multipack-admin.php` owns product fields and synchronization with
-  `_xfgmc_multipack`.
+- `class-vista-multipack-admin.php` owns product fields and prevents the
+  third-party feed plugin from emitting legacy `_xfgmc_multipack` data.
 - `class-vista-multipack-frontend.php` owns the product-page set form.
 - `class-vista-multipack-cart.php` owns real unit quantities, set pricing,
   customer-facing cart rendering, and order metadata.
@@ -37,16 +37,20 @@ Read the following documents before changing behavior:
   it with one synthetic stock unit.
 - `_vista_multipack_price` currently stores the total price of one complete set,
   not a per-unit price.
+- The independently purchasable set-rate unit price is calculated as the saved
+  set total divided by set size and rounded to WooCommerce currency precision.
 - Set and normal purchases remain separate cart lines.
 - Feed changes must not overwrite or remove the standard single-unit offer.
-- A merchant-defined multipack offer uses a unique ID, a landing URL that
-  selects the set, the full purchasable set price, and `g:multipack`.
+- The additional feed offer represents one independently purchasable unit, uses
+  a unique ID and selected landing URL, and must not contain `g:multipack`.
+- The complete-set storefront path remains available but is not exported as the
+  additional Merchant offer.
 - Never submit a conditional per-unit value as `g:price` when checkout requires
   the customer to buy multiple units. The submitted price must match the
   landing page and checkout.
-- A feed offer for one unit at a special price is allowed only when any shopper
-  can purchase exactly one unit at that price from the submitted landing URL.
-  Such an offer is not a multipack and must not contain `g:multipack`.
+- Any shopper must be able to purchase exactly one unit at the additional
+  offer's price from the submitted landing URL. The visible price, structured
+  data, cart and checkout must match the feed.
 
 ## Change workflow
 
@@ -69,4 +73,3 @@ The WordPress-root repository intentionally tracks only the root `.gitignore`
 and `wp-content/plugins/vista-multipack/**`. Do not add site configuration,
 uploads, database exports, third-party plugins, generated archives, or unrelated
 files to a commit.
-

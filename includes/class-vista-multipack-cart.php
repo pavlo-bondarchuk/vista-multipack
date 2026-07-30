@@ -29,17 +29,34 @@ final class Vista_Multipack_Cart {
 	}
 
 	/**
-	 * Whether the current add-to-cart request selected the pack button.
+	 * Return the requested plugin purchase mode.
+	 *
+	 * @return string
+	 */
+	private static function get_request_mode() {
+		if ( ! isset( $_REQUEST['vista_purchase_mode'] ) ) {
+			return '';
+		}
+
+		return sanitize_key( wp_unslash( $_REQUEST['vista_purchase_mode'] ) );
+	}
+
+	/**
+	 * Whether the current request selected a complete set.
 	 *
 	 * @return bool
 	 */
 	private static function is_pack_request() {
-		if ( ! isset( $_REQUEST['vista_purchase_mode'] ) ) {
-			return false;
-		}
+		return 'pack' === self::get_request_mode();
+	}
 
-		$mode = sanitize_key( wp_unslash( $_REQUEST['vista_purchase_mode'] ) );
-		return 'pack' === $mode;
+	/**
+	 * Whether the current request selected one unit at the set rate.
+	 *
+	 * @return bool
+	 */
+	private static function is_pack_unit_request() {
+		return 'pack_unit' === self::get_request_mode();
 	}
 
 	/**
@@ -51,7 +68,7 @@ final class Vista_Multipack_Cart {
 	 * @return bool
 	 */
 	public static function validate_pack_request( $passed, $product_id, $quantity ) {
-		if ( ! self::is_pack_request() ) {
+		if ( ! self::is_pack_request() && ! self::is_pack_unit_request() ) {
 			return $passed;
 		}
 
@@ -62,10 +79,19 @@ final class Vista_Multipack_Cart {
 		}
 
 		$product       = wc_get_product( $product_id );
-		$unit_quantity = max( 1, wc_stock_amount( $quantity ) ) * $config['size'];
+		$unit_quantity = max( 1, wc_stock_amount( $quantity ) );
+
+		if ( self::is_pack_request() ) {
+			$unit_quantity *= $config['size'];
+		}
 
 		if ( $product && $product->managing_stock() && ! $product->has_enough_stock( $unit_quantity ) ) {
-			wc_add_notice( __( 'There is not enough stock for the selected number of sets.', 'vista-multipack' ), 'error' );
+			wc_add_notice(
+				self::is_pack_request()
+					? __( 'There is not enough stock for the selected number of sets.', 'vista-multipack' )
+					: __( 'There is not enough stock for the selected number of units.', 'vista-multipack' ),
+				'error'
+			);
 			return false;
 		}
 
@@ -99,7 +125,7 @@ final class Vista_Multipack_Cart {
 	public static function add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
 		unset( $variation_id );
 
-		if ( ! self::is_pack_request() ) {
+		if ( ! self::is_pack_request() && ! self::is_pack_unit_request() ) {
 			return $cart_item_data;
 		}
 
@@ -108,9 +134,12 @@ final class Vista_Multipack_Cart {
 			return $cart_item_data;
 		}
 
-		$cart_item_data[ self::ITEM_MODE ]  = 'pack';
+		$is_pack_unit                      = self::is_pack_unit_request();
+		$cart_item_data[ self::ITEM_MODE ]  = $is_pack_unit ? 'pack_unit' : 'pack';
 		$cart_item_data[ self::ITEM_SIZE ]  = $config['size'];
-		$cart_item_data[ self::ITEM_PRICE ] = $config['price'];
+		$cart_item_data[ self::ITEM_PRICE ] = $is_pack_unit
+			? Vista_Multipack_Product::get_unit_price( $config )
+			: $config['price'];
 
 		return $cart_item_data;
 	}
@@ -127,11 +156,13 @@ final class Vista_Multipack_Cart {
 		}
 
 		foreach ( $cart->get_cart() as $cart_item ) {
-			if ( ! self::is_pack_item( $cart_item ) || empty( $cart_item['data'] ) ) {
+			if ( ( ! self::is_pack_item( $cart_item ) && ! self::is_pack_unit_item( $cart_item ) ) || empty( $cart_item['data'] ) ) {
 				continue;
 			}
 
-			$unit_price = (float) $cart_item[ self::ITEM_PRICE ] / (int) $cart_item[ self::ITEM_SIZE ];
+			$unit_price = self::is_pack_item( $cart_item )
+				? (float) $cart_item[ self::ITEM_PRICE ] / (int) $cart_item[ self::ITEM_SIZE ]
+				: (float) $cart_item[ self::ITEM_PRICE ];
 			$cart_item['data']->set_price( $unit_price );
 		}
 	}
@@ -144,7 +175,16 @@ final class Vista_Multipack_Cart {
 	 * @return array
 	 */
 	public static function render_cart_item_data( $item_data, $cart_item ) {
-		if ( ! self::is_pack_item( $cart_item ) ) {
+		if ( ! self::is_pack_item( $cart_item ) && ! self::is_pack_unit_item( $cart_item ) ) {
+			return $item_data;
+		}
+
+		if ( self::is_pack_unit_item( $cart_item ) ) {
+			$item_data[] = array(
+				'key'   => __( 'Purchase option', 'vista-multipack' ),
+				'value' => __( 'One unit at set price', 'vista-multipack' ),
+			);
+
 			return $item_data;
 		}
 
@@ -170,9 +210,15 @@ final class Vista_Multipack_Cart {
 	 */
 	public static function render_cart_item_name( $name, $cart_item, $cart_item_key ) {
 		unset( $cart_item_key );
-		return self::is_pack_item( $cart_item )
-			? $name . ' <span class="vista-multipack-cart-badge">' . esc_html__( 'Set', 'vista-multipack' ) . '</span>'
-			: $name;
+		if ( self::is_pack_item( $cart_item ) ) {
+			return $name . ' <span class="vista-multipack-cart-badge">' . esc_html__( 'Set', 'vista-multipack' ) . '</span>';
+		}
+
+		if ( self::is_pack_unit_item( $cart_item ) ) {
+			return $name . ' <span class="vista-multipack-cart-badge">' . esc_html__( 'Set unit', 'vista-multipack' ) . '</span>';
+		}
+
+		return $name;
 	}
 
 	/**
@@ -186,7 +232,7 @@ final class Vista_Multipack_Cart {
 	public static function render_cart_item_price( $price, $cart_item, $cart_item_key ) {
 		unset( $cart_item_key );
 
-		if ( ! self::is_pack_item( $cart_item ) ) {
+		if ( ! self::is_pack_item( $cart_item ) && ! self::is_pack_unit_item( $cart_item ) ) {
 			return $price;
 		}
 
@@ -199,7 +245,11 @@ final class Vista_Multipack_Cart {
 			)
 		);
 
-		return wc_price( $total ) . ' <small>' . esc_html__( 'per set', 'vista-multipack' ) . '</small>';
+		return wc_price( $total ) . ' <small>' .
+			( self::is_pack_item( $cart_item )
+				? esc_html__( 'per set', 'vista-multipack' )
+				: esc_html__( 'per unit', 'vista-multipack' ) ) .
+			'</small>';
 	}
 
 	/**
@@ -326,16 +376,31 @@ final class Vista_Multipack_Cart {
 	public static function add_order_item_data( $item, $cart_item_key, $values, $order ) {
 		unset( $cart_item_key, $order );
 
-		if ( ! self::is_pack_item( $values ) ) {
+		if ( ! self::is_pack_item( $values ) && ! self::is_pack_unit_item( $values ) ) {
 			return;
 		}
 
 		$size       = (int) $values[ self::ITEM_SIZE ];
-		$pack_count = (int) $values['quantity'] / $size;
+		$is_unit    = self::is_pack_unit_item( $values );
+		$pack_count = $is_unit ? 0 : (int) $values['quantity'] / $size;
 
-		$item->add_meta_data( '_vista_purchase_mode', 'pack', true );
+		$item->add_meta_data( '_vista_purchase_mode', $is_unit ? 'pack_unit' : 'pack', true );
 		$item->add_meta_data( '_vista_pack_size', $size, true );
-		$item->add_meta_data( '_vista_pack_price', wc_format_decimal( $values[ self::ITEM_PRICE ] ), true );
+		$item->add_meta_data(
+			$is_unit ? '_vista_pack_unit_price' : '_vista_pack_price',
+			wc_format_decimal( $values[ self::ITEM_PRICE ] ),
+			true
+		);
+
+		if ( $is_unit ) {
+			$item->add_meta_data(
+				__( 'Set unit', 'vista-multipack' ),
+				__( 'One unit at set price', 'vista-multipack' ),
+				true
+			);
+			return;
+		}
+
 		$item->add_meta_data(
 			__( 'Set', 'vista-multipack' ),
 			sprintf(
@@ -358,6 +423,20 @@ final class Vista_Multipack_Cart {
 		return is_array( $cart_item )
 			&& isset( $cart_item[ self::ITEM_MODE ], $cart_item[ self::ITEM_SIZE ], $cart_item[ self::ITEM_PRICE ] )
 			&& 'pack' === $cart_item[ self::ITEM_MODE ]
+			&& (int) $cart_item[ self::ITEM_SIZE ] >= 2
+			&& (float) $cart_item[ self::ITEM_PRICE ] > 0;
+	}
+
+	/**
+	 * Validate a saved independently purchasable set-rate unit.
+	 *
+	 * @param array|false $cart_item Cart item.
+	 * @return bool
+	 */
+	private static function is_pack_unit_item( $cart_item ) {
+		return is_array( $cart_item )
+			&& isset( $cart_item[ self::ITEM_MODE ], $cart_item[ self::ITEM_SIZE ], $cart_item[ self::ITEM_PRICE ] )
+			&& 'pack_unit' === $cart_item[ self::ITEM_MODE ]
 			&& (int) $cart_item[ self::ITEM_SIZE ] >= 2
 			&& (float) $cart_item[ self::ITEM_PRICE ] > 0;
 	}

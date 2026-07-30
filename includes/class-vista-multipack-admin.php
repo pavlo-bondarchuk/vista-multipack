@@ -49,7 +49,7 @@ final class Vista_Multipack_Admin {
 			array(
 				'id'          => Vista_Multipack_Product::META_PRICE,
 				'label'       => __( 'Set price', 'vista-multipack' ) . ' (' . get_woocommerce_currency_symbol() . ')',
-				'description' => __( 'Total price for one complete set. The set offer remains hidden until this price is set.', 'vista-multipack' ),
+				'description' => __( 'Total price for one complete set. The independently purchasable feed-unit price is this total divided by the set size.', 'vista-multipack' ),
 				'type'        => 'text',
 				'data_type'   => 'price',
 				'desc_tip'    => true,
@@ -82,13 +82,8 @@ final class Vista_Multipack_Admin {
 		$product->update_meta_data( Vista_Multipack_Product::META_SIZE, $size >= 2 ? $size : '' );
 		$product->update_meta_data( Vista_Multipack_Product::META_PRICE, (float) $price > 0 ? $price : '' );
 
-		if ( 'yes' === $enabled && $size >= 2 ) {
-			$product->update_meta_data( '_xfgmc_multipack', $size );
-			$_POST['_xfgmc_multipack'] = (string) $size;
-		} else {
-			$product->delete_meta_data( '_xfgmc_multipack' );
-			$_POST['_xfgmc_multipack'] = '';
-		}
+		$product->delete_meta_data( '_xfgmc_multipack' );
+		$_POST['_xfgmc_multipack'] = '';
 	}
 
 	/**

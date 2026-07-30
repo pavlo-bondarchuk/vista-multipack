@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Vista Multipack 1.0.3\n"
-"PO-Revision-Date: 2026-07-24 00:00+0300\n"
+"Project-Id-Version: Vista Multipack 1.1.0\n"
+"PO-Revision-Date: 2026-07-30 00:00+0300\n"
 "Last-Translator: Vista Health\n"
 "Language-Team: Russian\n"
 "Language: ru_RU\n"
@@ -28,8 +28,8 @@ msgstr "Фактическое количество товара WooCommerce, д
 msgid "Set price"
 msgstr "Цена комплекта"
 
-msgid "Total price for one complete set. The set offer remains hidden until this price is set."
-msgstr "Общая цена полного комплекта. Пока цена не указана, предложение комплекта скрыто."
+msgid "Total price for one complete set. The independently purchasable feed-unit price is this total divided by the set size."
+msgstr "Общая цена полного комплекта. Цена отдельной единицы для фида рассчитывается делением этой суммы на количество единиц в комплекте."
 
 msgid "Vista Multipack feed integration was verified with XML for Google Merchant Center 4.3.0. Installed version: %s. Regenerate and validate the feed after updates."
 msgstr "Интеграция Vista Multipack проверена с XML for Google Merchant Center 4.3.0. Установленная версия: %s. После обновления пересоздайте и проверьте фид."
@@ -43,20 +43,38 @@ msgstr[2] "Комплект из %d единиц"
 msgid "Set (%1$d units) — %2$s"
 msgstr "Комплект (%1$d ед.) — %2$s"
 
+msgid "One unit at set price: %s"
+msgstr "Одна единица по цене комплекта: %s"
+
+msgid "One unit at set price — %s"
+msgstr "1 ед. по цене комплекта — %s"
+
 msgid "This set offer is no longer available."
 msgstr "Это предложение комплекта больше недоступно."
 
 msgid "There is not enough stock for the selected number of sets."
 msgstr "Недостаточно товара для выбранного количества комплектов."
 
+msgid "There is not enough stock for the selected number of units."
+msgstr "Недостаточно товара для выбранного количества единиц."
+
 msgid "Purchase option"
 msgstr "Вариант покупки"
+
+msgid "One unit at set price"
+msgstr "Одна единица по цене комплекта"
 
 msgid "Set"
 msgstr "Комплект"
 
+msgid "Set unit"
+msgstr "Единица комплекта"
+
 msgid "per set"
 msgstr "за комплект"
+
+msgid "per unit"
+msgstr "за единицу"
 
 msgid "%d unit total"
 msgid_plural "%d units total"
@@ -73,11 +91,8 @@ msgstr "Количество комплекта изменено на некор
 msgid "%1$d × %2$d units"
 msgstr "%1$d × %2$d ед."
 
-msgid "%1$s — Set of %2$d"
-msgstr "%1$s — Комплект из %2$d ед."
+msgid "%s — One unit at set price"
+msgstr "%s — 1 ед. по цене комплекта"
 
-msgid "This offer contains %d identical unit."
-msgid_plural "This offer contains %d identical units."
-msgstr[0] "Это предложение содержит %d одинаковую единицу товара."
-msgstr[1] "Это предложение содержит %d одинаковые единицы товара."
-msgstr[2] "Это предложение содержит %d одинаковых единиц товара."
+msgid "This offer contains one independently purchasable unit at the set-equivalent unit price."
+msgstr "Это предложение содержит одну единицу товара, которую можно приобрести отдельно по цене единицы в комплекте."

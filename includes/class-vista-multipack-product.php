@@ -79,6 +79,40 @@ final class Vista_Multipack_Product {
 	}
 
 	/**
+	 * Raw price of one independently purchasable unit at the set rate.
+	 *
+	 * The saved price remains the complete set total. Keeping the calculation
+	 * here gives the storefront, cart, structured data and feed one source of
+	 * truth without migrating existing product metadata.
+	 *
+	 * @param array $config Set configuration.
+	 * @return float
+	 */
+	public static function get_unit_price( array $config ) {
+		return (float) wc_format_decimal(
+			(float) $config['price'] / (int) $config['size'],
+			wc_get_price_decimals()
+		);
+	}
+
+	/**
+	 * Set-equivalent unit price formatted for storefront tax display rules.
+	 *
+	 * @param WC_Product $product Product.
+	 * @param array      $config  Set configuration.
+	 * @return float
+	 */
+	public static function get_unit_display_price( $product, array $config ) {
+		return (float) wc_get_price_to_display(
+			$product,
+			array(
+				'price' => self::get_unit_price( $config ),
+				'qty'   => 1,
+			)
+		);
+	}
+
+	/**
 	 * URL that exposes and highlights the pack offer on the landing page.
 	 *
 	 * @param WC_Product $product Product.
@@ -86,5 +120,15 @@ final class Vista_Multipack_Product {
 	 */
 	public static function get_pack_url( $product ) {
 		return add_query_arg( 'vista_purchase', 'pack', $product->get_permalink() ) . '#vista-multipack';
+	}
+
+	/**
+	 * URL that preselects the independently purchasable set-rate unit.
+	 *
+	 * @param WC_Product $product Product.
+	 * @return string
+	 */
+	public static function get_unit_url( $product ) {
+		return add_query_arg( 'vista_purchase', 'set-unit', $product->get_permalink() ) . '#vista-multipack';
 	}
 }

@@ -21,6 +21,8 @@ final class Vista_Multipack_Plugin {
 			return;
 		}
 
+		self::maybe_upgrade();
+
 		Vista_Multipack_Admin::init();
 		Vista_Multipack_Frontend::init();
 		Vista_Multipack_Cart::init();
@@ -60,7 +62,54 @@ final class Vista_Multipack_Plugin {
 			update_post_meta( $product_id, Vista_Multipack_Product::META_SIZE, $existing_size );
 		}
 
+		self::remove_legacy_feed_multipack_meta();
 		update_option( 'vista_multipack_version', VISTA_MULTIPACK_VERSION, false );
+	}
+
+	/**
+	 * Apply one-time compatibility migrations for an existing installation.
+	 *
+	 * @return void
+	 */
+	private static function maybe_upgrade() {
+		$installed_version = (string) get_option( 'vista_multipack_version', '0.0.0' );
+
+		if ( version_compare( $installed_version, '1.1.0', '<' ) ) {
+			self::remove_legacy_feed_multipack_meta();
+		}
+
+		if ( VISTA_MULTIPACK_VERSION !== $installed_version ) {
+			update_option( 'vista_multipack_version', VISTA_MULTIPACK_VERSION, false );
+		}
+	}
+
+	/**
+	 * Prevent the feed plugin from independently exporting the old multipack.
+	 *
+	 * The configured set size remains in this plugin's own metadata. Only the
+	 * third-party feed plugin's legacy compatibility field is removed.
+	 *
+	 * @return void
+	 */
+	private static function remove_legacy_feed_multipack_meta() {
+		$product_ids = get_posts(
+			array(
+				'post_type'              => 'product',
+				'post_status'            => array( 'publish', 'draft', 'private' ),
+				'posts_per_page'         => -1,
+				'fields'                 => 'ids',
+				'meta_key'               => Vista_Multipack_Product::META_ENABLED,
+				'meta_value'             => 'yes',
+				'no_found_rows'          => true,
+				'suppress_filters'       => true,
+				'update_post_meta_cache' => false,
+				'update_post_term_cache' => false,
+			)
+		);
+
+		foreach ( $product_ids as $product_id ) {
+			delete_post_meta( $product_id, '_xfgmc_multipack' );
+		}
 	}
 
 	/**

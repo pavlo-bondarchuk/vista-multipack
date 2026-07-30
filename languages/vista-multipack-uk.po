@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Vista Multipack 1.0.3\n"
-"PO-Revision-Date: 2026-07-24 00:00+0300\n"
+"Project-Id-Version: Vista Multipack 1.1.0\n"
+"PO-Revision-Date: 2026-07-30 00:00+0300\n"
 "Last-Translator: Vista Health\n"
 "Language-Team: Ukrainian\n"
 "Language: uk\n"
@@ -28,8 +28,8 @@ msgstr "Фактична кількість товару WooCommerce, яка д�
 msgid "Set price"
 msgstr "Ціна комплекту"
 
-msgid "Total price for one complete set. The set offer remains hidden until this price is set."
-msgstr "Загальна ціна повного комплекту. Поки ціна не задана, пропозиція комплекту прихована."
+msgid "Total price for one complete set. The independently purchasable feed-unit price is this total divided by the set size."
+msgstr "Загальна ціна повного комплекту. Ціна окремої одиниці для фіду обчислюється діленням цієї суми на кількість одиниць у комплекті."
 
 msgid "Vista Multipack feed integration was verified with XML for Google Merchant Center 4.3.0. Installed version: %s. Regenerate and validate the feed after updates."
 msgstr "Інтеграцію Vista Multipack перевірено з XML for Google Merchant Center 4.3.0. Встановлена версія: %s. Після оновлення перегенеруйте та перевірте фід."
@@ -43,20 +43,38 @@ msgstr[2] "Комплект з %d одиниць"
 msgid "Set (%1$d units) — %2$s"
 msgstr "Комплект (%1$d од.) — %2$s"
 
+msgid "One unit at set price: %s"
+msgstr "Одна одиниця за ціною комплекту: %s"
+
+msgid "One unit at set price — %s"
+msgstr "1 од. за ціною комплекту — %s"
+
 msgid "This set offer is no longer available."
 msgstr "Ця пропозиція комплекту більше не доступна."
 
 msgid "There is not enough stock for the selected number of sets."
 msgstr "Недостатньо товару для вибраної кількості комплектів."
 
+msgid "There is not enough stock for the selected number of units."
+msgstr "Недостатньо товару для вибраної кількості одиниць."
+
 msgid "Purchase option"
 msgstr "Варіант покупки"
+
+msgid "One unit at set price"
+msgstr "Одна одиниця за ціною комплекту"
 
 msgid "Set"
 msgstr "Комплект"
 
+msgid "Set unit"
+msgstr "Одиниця комплекту"
+
 msgid "per set"
 msgstr "за комплект"
+
+msgid "per unit"
+msgstr "за одиницю"
 
 msgid "%d unit total"
 msgid_plural "%d units total"
@@ -73,11 +91,8 @@ msgstr "Кількість комплекту змінено на некорек
 msgid "%1$d × %2$d units"
 msgstr "%1$d × %2$d од."
 
-msgid "%1$s — Set of %2$d"
-msgstr "%1$s — Комплект з %2$d од."
+msgid "%s — One unit at set price"
+msgstr "%s — 1 од. за ціною комплекту"
 
-msgid "This offer contains %d identical unit."
-msgid_plural "This offer contains %d identical units."
-msgstr[0] "Ця пропозиція містить %d однакову одиницю товару."
-msgstr[1] "Ця пропозиція містить %d однакові одиниці товару."
-msgstr[2] "Ця пропозиція містить %d однакових одиниць товару."
+msgid "This offer contains one independently purchasable unit at the set-equivalent unit price."
+msgstr "Ця пропозиція містить одну одиницю товару, яку можна придбати окремо за ціною одиниці в комплекті."

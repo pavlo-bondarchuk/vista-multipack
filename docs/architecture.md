@@ -2,10 +2,12 @@
 
 ## Purpose
 
-Vista Multipack gives a simple WooCommerce product two purchase paths:
+Vista Multipack gives a simple WooCommerce product three purchase paths:
 
 1. the standard single-unit WooCommerce offer;
 2. a fixed-size retailer-defined set with its own total price.
+3. one independently purchasable unit at the set-equivalent unit price,
+   preselected by the additional feed offer.
 
 The implementation preserves native WooCommerce quantities so stock reduction,
 refunds, cancellations, and external order integrations continue to work with
@@ -26,8 +28,9 @@ simple product with an enabled flag, a size of at least two, and a positive set
 total.
 
 If translated WPML products do not have their own plugin metadata, reads fall
-back to the default-language product. The admin synchronizes the set size to
-the feed plugin's `_xfgmc_multipack` metadata for compatibility.
+back to the default-language product. The admin removes the feed plugin's
+legacy `_xfgmc_multipack` metadata when saving because the additional offer is
+now one unit rather than a multipack.
 
 ## Storefront and cart flow
 
@@ -53,36 +56,50 @@ For a seven-unit set, one customer-facing set is therefore an order quantity of
 seven. This behavior is intentional and must remain compatible with stock and
 order integrations.
 
+The feed landing URL uses `vista_purchase=set-unit`. On that selected URL:
+
+- the prominent price is the set total divided by set size;
+- the compact button and standard WooCommerce form submit
+  `vista_purchase_mode=pack_unit`;
+- the cart stores one real product unit at the calculated unit price;
+- WooCommerce structured data exposes the same unit price and selected URL;
+- the special unit remains a separate cart and order line.
+
 ## Feed integration
 
 The plugin uses the public `xfgmc_f_after_simple_offer` filter. It does not
 modify `XML for Google Merchant Center`.
 
-For every valid set configuration, the feed integration clones the standard
-single-unit `<item>` and changes the clone:
+For every valid set configuration, the feed integration preserves the standard
+single-unit `<item>` and appends one independently purchasable set-rate unit:
 
-- ID: `<base ID>-multipack-<set size>`;
-- title and description: identify the set size;
-- link: selects the set offer on the landing page;
-- price: uses the complete set total;
-- sale-price elements: removed from the cloned set offer;
-- `g:multipack`: set to the number of grouped identical products;
-- availability and optional quantity: recalculated from real product stock.
+- ID: `<base ID>-set-unit-<set size>`;
+- title and description: identify the one-unit special offer;
+- link: preselects the set-rate unit on the landing page;
+- price: uses the rounded set total divided by set size;
+- sale-price elements: removed from the cloned unit offer;
+- `g:multipack`: explicitly removed from both generated offers.
 
 The original single-unit item remains unchanged.
 
 ## Current example
 
-The last locally generated XML contains:
+Before version 1.1.0, the last locally generated XML contained:
 
 | Offer | Price data | Meaning |
 | --- | --- | --- |
 | `21626` | `price=970 UAH`, `sale_price=640 UAH` | One standard unit |
 | `21626-multipack-7` | `price=5999 UAH`, `multipack=7` | One set of seven units |
 
-The saved XML is valid, but the Local site database was not running during the
-2026-07-30 documentation audit. Treat these values as the last generated local
-snapshot and recheck live product metadata before any pricing migration.
+Version 1.1.0 must regenerate that snapshot as:
+
+| Offer | Price data | Meaning |
+| --- | --- | --- |
+| `21626` | `price=970 UAH`, `sale_price=640 UAH` | Standard WooCommerce unit |
+| `21626-set-unit-7` | `price=857 UAH`, no `multipack` | Independently purchasable set-rate unit |
+
+Recheck live product metadata before treating these example values as
+commercially approved.
 
 ## Compatibility boundaries
 
@@ -92,4 +109,5 @@ snapshot and recheck live product metadata before any pricing migration.
   compatibility.
 - The plugin does not enable stock management or invent stock values.
 - The plugin does not alter the regular or sale price of the base product.
-
+- A duplicate one-unit Merchant offer may be deduplicated by Google because it
+  represents the same underlying product with another public purchase price.

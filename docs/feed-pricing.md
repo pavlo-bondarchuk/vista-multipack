@@ -73,30 +73,36 @@ size would create these inconsistencies:
 Google documents price mismatch as a product-disapproval risk and notes that
 systemic mismatches may lead to account suspension.
 
-## Recommended decision
+## Implemented decision
 
-Do not change the current multipack offer to a one-unit price unless the
-storefront and checkout are also changed so one unit is genuinely purchasable
-at that price.
+Scenario A was approved on 2026-07-30.
 
-For the current fixed-set business model, retain the total multipack
-`g:price` and add unit-pricing attributes if a per-unit comparison is required.
+Version 1.1.0 therefore:
 
-If the commercial requirement is instead a third price for one independently
-purchasable unit, design it as a separate pricing feature rather than reusing
-the multipack field. That feature needs its own eligibility rules, product
-metadata, landing-page state, cart pricing, order metadata, structured data,
-and feed offer.
+- keeps the existing standard WooCommerce offer;
+- keeps the complete-set purchase path on the normal product page;
+- calculates one public unit price from set total divided by set size;
+- appends a separate one-unit feed offer with a unique ID;
+- omits `g:multipack`;
+- links to `vista_purchase=set-unit`;
+- exposes the same price in visible HTML and WooCommerce structured data;
+- lets any shopper buy one real unit at that price;
+- preserves the special unit price in the cart and order.
 
-## Required clarification before code changes
+The stored `_vista_multipack_price` remains a complete set total, so existing
+product metadata is not silently reinterpreted.
 
-Confirm one statement:
+## Residual Merchant considerations
 
-1. "A customer may buy exactly one unit at the new price."
-2. "The new price is per unit only when the customer buys the configured set."
-
-The first statement leads to a new single-unit offer without `g:multipack`.
-The second statement keeps the complete set price in `g:price`.
+- The standard and special offers identify the same physical product. Google
+  may deduplicate them or choose one price presentation.
+- Feed approval still depends on the live landing page, structured data,
+  checkout, product identifiers, target country, and Merchant account state.
+- The calculated unit price must be commercially valid. In the historical
+  example, `5999 / 7 = 857`, which is higher than the standard sale price of
+  `640`; this should be reviewed by the store owner.
+- A future change to set size or total changes the special unit offer and
+  requires immediate feed regeneration.
 
 ## Official references
 
@@ -110,4 +116,3 @@ The second statement keeps the complete set price in `g:price`.
   [Inaccurate price due to feed and landing-page inconsistency](https://support.google.com/merchants/answer/9773429)
 - Google Merchant Center:
   [Unit pricing measure](https://support.google.com/merchants/answer/6324455)
-

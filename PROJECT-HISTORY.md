@@ -227,3 +227,33 @@ Status: analysis and documentation completed; executable behavior unchanged.
   set-conditional unit price.
 - Published the audit and documentation to the public plugin repository's
   `main` branch.
+
+## 2026-07-30 — Independently purchasable set-unit feed offer
+
+Status: passed.
+
+- Approved the one-unit scenario: the additional feed offer will represent one
+  independently purchasable product unit at the set-equivalent unit price.
+- The saved `_vista_multipack_price` value remains the complete set total; no
+  stored product prices will be reinterpreted or migrated.
+- The special unit price will be calculated as set total divided by set size.
+- The standard product offer and existing complete-set purchase path will
+  remain available.
+- The additional feed offer will use its own ID and selected landing URL, will
+  omit `g:multipack`, and will submit the actual one-unit checkout price.
+- The selected landing URL, visible price, structured data, add-to-cart request,
+  cart line, order metadata, and feed value will be updated together.
+- Released plugin version `1.1.0`. For the current product configuration, the
+  set total `5,999 UAH` divided by `7` units produces the purchasable unit price
+  `857 UAH`.
+- Verified Ukrainian and Russian selected landing pages, both add-to-cart
+  forms, the visible unit price, and Product structured data.
+- Verified three independent cart lines: the standard unit at its WooCommerce
+  price, the complete set with seven stock units, and the selected set-rate unit
+  with quantity one and price `857 UAH`.
+- Verified the selected unit's order metadata and real WooCommerce quantity.
+- Removed the legacy `_xfgmc_multipack` compatibility value through the
+  `1.1.0` upgrade while preserving `_vista_multipack_size`.
+- Regenerated and validated the Merchant XML. The standard `21626` offer
+  remains, the additional `21626-set-unit-7` offer has price `857 UAH`, and
+  neither offer contains `g:multipack`.

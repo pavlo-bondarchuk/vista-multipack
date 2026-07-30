@@ -1,8 +1,8 @@
 <?php
 /**
  * Plugin Name: Vista Multipack
- * Description: Adds fixed-size set purchasing to WooCommerce products and compatible multipack offers to XML for Google Merchant Center.
- * Version: 1.0.3
+ * Description: Adds fixed-size set purchasing and independently purchasable set-rate unit offers for Google Merchant XML.
+ * Version: 1.1.0
  * Requires at least: 6.5
  * Requires PHP: 7.4
  * Requires Plugins: woocommerce
@@ -13,7 +13,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'VISTA_MULTIPACK_VERSION', '1.0.3' );
+define( 'VISTA_MULTIPACK_VERSION', '1.1.0' );
 define( 'VISTA_MULTIPACK_FILE', __FILE__ );
 define( 'VISTA_MULTIPACK_PATH', plugin_dir_path( __FILE__ ) );
 define( 'VISTA_MULTIPACK_URL', plugin_dir_url( __FILE__ ) );

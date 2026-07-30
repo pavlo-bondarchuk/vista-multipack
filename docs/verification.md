@@ -35,7 +35,7 @@ confirmed.
 
 ## Storefront and cart
 
-Verify both the standard and set paths:
+Verify the standard, complete-set, and selected set-rate unit paths:
 
 - product page shows the expected action and price;
 - one standard-unit submission adds one real unit;
@@ -45,6 +45,11 @@ Verify both the standard and set paths:
 - cart subtotal equals the configured set total;
 - stock validation uses the real unit count;
 - order quantity and technical order metadata remain correct.
+- the `vista_purchase=set-unit` URL prominently shows the calculated unit price;
+- both add-to-cart forms on that URL submit `pack_unit`;
+- the special unit adds exactly one real unit at the calculated price;
+- its cart line is separate from both a normal unit and a complete set;
+- structured data contains the calculated unit price and selected URL.
 
 ## Feed generation
 
@@ -57,28 +62,20 @@ xmllint --noout wp-content/uploads/feed-xml-0.xml
 
 Do not use the feed plugin's `quick` command for the verified 4.3.0 integration.
 
-Inspect the generated base and set offers. For a required set:
+Inspect the generated base and additional unit offers:
 
 - both offer IDs are unique;
 - the base offer remains unchanged;
-- the set title and link clearly select the set;
-- `g:price` equals the minimum checkout charge for the set;
-- `g:multipack` equals the configured set size;
-- any unit-pricing elements use the same total price as their calculation base;
+- the additional ID uses `<base ID>-set-unit-<set size>`;
+- the additional title and link clearly select one set-rate unit;
+- its `g:price` equals the one-unit landing-page and checkout charge;
+- neither offer contains retailer-defined `g:multipack` from this plugin;
 - feed price, visible landing-page price, structured data, cart, and checkout
   do not contradict one another;
-- availability reflects whether enough real units exist to fulfill the offer.
-
-If the intended feed offer represents one independently purchasable unit:
-
-- omit `g:multipack`;
-- verify that exactly one unit can be purchased at `g:price`;
-- verify that the link preselects that exact one-unit pricing state;
-- verify the same price in HTML, structured data, cart, and checkout.
+- availability reflects whether at least one real unit can be fulfilled.
 
 ## Runtime notes
 
 The Local site must be running before WP-CLI database checks or feed generation.
 Rediscover the active Local MySQL socket after restarts instead of assuming a
 previous runtime path is still valid.
-

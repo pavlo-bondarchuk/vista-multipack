@@ -23,8 +23,13 @@ stock values for existing products.
 ## Google Merchant feed
 
 When `XML for Google Merchant Center` is active, the plugin keeps the standard
-single-unit offer and appends a second offer for the set. The set offer has a
-unique ID, total set price, set landing link, and `g:multipack`.
+single-unit offer and appends a second independently purchasable unit at the
+set-equivalent unit price. The second offer has a unique ID, a landing link
+that preselects that price, matching structured data and no `g:multipack`.
+
+The saved set price remains the total for a complete set. The additional unit
+price is calculated as set total divided by set size and rounded to the store's
+currency precision.
 
 Compatibility is verified with `XML for Google Merchant Center` 4.3.0.
 Regenerate the current feed with:
