@@ -1,0 +1,72 @@
+# Vista Multipack development guide
+
+## Scope
+
+These instructions apply to the entire `vista-multipack` plugin.
+
+The plugin extends simple WooCommerce products with a fixed-size set purchase
+option and adds a compatible offer to the `XML for Google Merchant Center`
+feed. Keep the implementation isolated in this plugin. Do not patch
+WooCommerce, the active theme, or the third-party feed plugin.
+
+Read the following documents before changing behavior:
+
+- `docs/architecture.md`
+- `docs/feed-pricing.md`
+- `docs/verification.md`
+- `PROJECT-HISTORY.md`
+
+## Architecture ownership
+
+- `class-vista-multipack-product.php` owns validated product configuration and
+  WPML fallback reads.
+- `class-vista-multipack-admin.php` owns product fields and synchronization with
+  `_xfgmc_multipack`.
+- `class-vista-multipack-frontend.php` owns the product-page set form.
+- `class-vista-multipack-cart.php` owns real unit quantities, set pricing,
+  customer-facing cart rendering, and order metadata.
+- `class-vista-multipack-feed.php` owns the extra feed offer and must integrate
+  only through public feed-plugin hooks.
+
+## Required invariants
+
+- Customer-facing wording uses "set" and localized equivalents such as
+  "комплект". Existing technical `pack` identifiers, request values, metadata,
+  and cart keys remain stable unless a migration is explicitly designed.
+- A set of `N` products is stored as `N` real WooCommerce units. Do not replace
+  it with one synthetic stock unit.
+- `_vista_multipack_price` currently stores the total price of one complete set,
+  not a per-unit price.
+- Set and normal purchases remain separate cart lines.
+- Feed changes must not overwrite or remove the standard single-unit offer.
+- A merchant-defined multipack offer uses a unique ID, a landing URL that
+  selects the set, the full purchasable set price, and `g:multipack`.
+- Never submit a conditional per-unit value as `g:price` when checkout requires
+  the customer to buy multiple units. The submitted price must match the
+  landing page and checkout.
+- A feed offer for one unit at a special price is allowed only when any shopper
+  can purchase exactly one unit at that price from the submitted landing URL.
+  Such an offer is not a multipack and must not contain `g:multipack`.
+
+## Change workflow
+
+1. Record the requested behavior and initial status in `PROJECT-HISTORY.md`.
+2. Confirm whether an entered set price is a total or a per-unit value before
+   changing data semantics.
+3. Trace the change through product configuration, admin saving, storefront,
+   cart, order metadata, feed output, WPML behavior, and translations.
+4. Preserve existing metadata semantics or provide an explicit migration.
+   Never silently reinterpret stored total prices as per-unit prices.
+5. Update the plugin version when executable PHP, CSS, or translation output
+   changes.
+6. Recompile both `.mo` files after editing `.po` files.
+7. Complete the verification in `docs/verification.md`.
+8. Update `PROJECT-HISTORY.md` with the verified result before publishing.
+
+## Repository boundaries
+
+The WordPress-root repository intentionally tracks only the root `.gitignore`
+and `wp-content/plugins/vista-multipack/**`. Do not add site configuration,
+uploads, database exports, third-party plugins, generated archives, or unrelated
+files to a commit.
+

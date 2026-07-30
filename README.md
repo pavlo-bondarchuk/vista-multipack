@@ -40,3 +40,10 @@ to assemble a feed before creating its temporary product files.
 
 See [PROJECT-HISTORY.md](PROJECT-HISTORY.md) for the audit, implementation
 record, and verification results.
+
+## Development documentation
+
+- [Architecture](docs/architecture.md)
+- [Google Merchant feed pricing](docs/feed-pricing.md)
+- [Verification checklist](docs/verification.md)
+- [Development guide](AGENTS.md)

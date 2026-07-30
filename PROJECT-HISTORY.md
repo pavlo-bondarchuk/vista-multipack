@@ -199,3 +199,29 @@ Status: passed.
   `Комплект (7 од.) — 5,999 грн` without the removed details block.
 - Confirmed the button remains a compact 30-pixel-high secondary action.
 - Published version 1.0.3 to the public repository's `main` branch.
+
+## 2026-07-30 — Plugin audit and per-unit feed request
+
+Status: analysis and documentation completed; executable behavior unchanged.
+
+- Re-audited product metadata, storefront submission, cart quantity and price
+  handling, order metadata, and the XML feed extension.
+- Confirmed `_vista_multipack_price` is currently a complete set total and is
+  divided only for WooCommerce's internal per-unit line calculation.
+- Confirmed the feed integration preserves the standard single-unit item and
+  appends a separate set offer with a unique ID, complete set price, selected
+  landing URL, and `g:multipack`.
+- Inspected the last generated valid XML snapshot: the base offer has
+  `970 UAH` with a `640 UAH` sale price, while `21626-multipack-7` has
+  `5999 UAH` and `g:multipack=7`.
+- The Local database was not running during this audit, so live product
+  metadata and feed regeneration remain required before a future executable
+  pricing change.
+- Documented that a one-unit feed price is valid only when one unit can actually
+  be bought at that price. If the price requires purchasing the complete set,
+  Google requires the minimum purchasable total instead.
+- Added plugin-scoped development instructions, architecture documentation, a
+  feed-pricing decision record, and a repeatable verification checklist.
+- Deliberately left feed behavior unchanged until the commercial requirement is
+  confirmed as either an independently purchasable unit price or a
+  set-conditional unit price.
