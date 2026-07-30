@@ -281,3 +281,4 @@ Status: passed.
   regenerated XML with `xmllint`.
 - Confirmed the regenerated XML contains the standard `21626` offer and the
   `21626-set-unit-7` offer at `857 UAH`, with no `g:multipack`.
+- Published version `1.1.1` to the public plugin repository's `main` branch.
