@@ -82,6 +82,13 @@ single-unit `<item>` and appends one independently purchasable set-rate unit:
 
 The original single-unit item remains unchanged.
 
+When a simple product gains, changes, or loses its set configuration, the
+plugin waits until WooCommerce persists the product and invokes the feed
+plugin's `xfgmc_cron_start_feed_creation` action for every configured feed.
+Generation remains asynchronous and owned by `XML for Google Merchant Center`.
+If a feed is already being assembled, one delayed retry is scheduled instead
+of interrupting the active build.
+
 ## Current example
 
 Before version 1.1.0, the last locally generated XML contained:

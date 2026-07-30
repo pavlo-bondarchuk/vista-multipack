@@ -53,6 +53,16 @@ Verify the standard, complete-set, and selected set-rate unit paths:
 
 ## Feed generation
 
+After changing or disabling an existing product's set configuration, save the
+product and verify:
+
+- the feed plugin's `xfgmc_cron_start_feed_creation` action is requested after
+  WooCommerce persists the product;
+- the feed build completes without requiring its optional
+  `Update feed when updating products` setting;
+- the XML file modification time changes;
+- the additional unit offer is added, updated, or removed as appropriate.
+
 Use the full feed command:
 
 ```bash

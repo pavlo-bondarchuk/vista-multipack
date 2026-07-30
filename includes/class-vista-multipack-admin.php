@@ -70,6 +70,7 @@ final class Vista_Multipack_Admin {
 			return;
 		}
 
+		$had_config = null !== Vista_Multipack_Product::get_config( $product );
 		$enabled = isset( $_POST[ Vista_Multipack_Product::META_ENABLED ] ) ? 'yes' : 'no';
 		$size    = isset( $_POST[ Vista_Multipack_Product::META_SIZE ] )
 			? absint( wp_unslash( $_POST[ Vista_Multipack_Product::META_SIZE ] ) )
@@ -84,6 +85,11 @@ final class Vista_Multipack_Admin {
 
 		$product->delete_meta_data( '_xfgmc_multipack' );
 		$_POST['_xfgmc_multipack'] = '';
+
+		$will_have_config = 'yes' === $enabled && $size >= 2 && (float) $price > 0;
+		if ( $had_config || $will_have_config ) {
+			Vista_Multipack_Feed::request_regeneration();
+		}
 	}
 
 	/**

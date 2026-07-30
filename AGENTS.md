@@ -25,8 +25,9 @@ Read the following documents before changing behavior:
 - `class-vista-multipack-frontend.php` owns the product-page set form.
 - `class-vista-multipack-cart.php` owns real unit quantities, set pricing,
   customer-facing cart rendering, and order metadata.
-- `class-vista-multipack-feed.php` owns the extra feed offer and must integrate
-  only through public feed-plugin hooks.
+- `class-vista-multipack-feed.php` owns the extra feed offer and product-save
+  regeneration requests, and must integrate only through public feed-plugin
+  hooks.
 
 ## Required invariants
 

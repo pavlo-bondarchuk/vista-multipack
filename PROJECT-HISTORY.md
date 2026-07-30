@@ -258,3 +258,26 @@ Status: passed.
   remains, the additional `21626-set-unit-7` offer has price `857 UAH`, and
   neither offer contains `g:multipack`.
 - Published version `1.1.0` to the public plugin repository's `main` branch.
+
+## 2026-07-30 — Regenerate feeds after set product updates
+
+Status: passed.
+
+- Production showed that saving a product did not update the generated XML
+  unless the feed plugin's optional product-update setting was enabled.
+- The plugin will request regeneration whenever a product gains, changes, or
+  loses a valid set configuration.
+- Regeneration will start after WooCommerce persists the product and will use
+  the feed plugin's `xfgmc_cron_start_feed_creation` action instead of
+  duplicating its generation logic.
+- Multiple changes in the same request will be deduplicated, and an active feed
+  build will receive one delayed retry rather than being interrupted.
+- Released plugin version `1.1.1`.
+- Verified that saving product `21626` requests
+  `xfgmc_cron_start_feed_creation` only after its set metadata is persisted.
+- Verified that the feed enters its generation flow even while the feed
+  plugin's optional `xfgmc_ufup` product-update setting is disabled.
+- Completed the feed plugin's scheduled generation stages and validated the
+  regenerated XML with `xmllint`.
+- Confirmed the regenerated XML contains the standard `21626` offer and the
+  `21626-set-unit-7` offer at `857 UAH`, with no `g:multipack`.

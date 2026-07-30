@@ -1,6 +1,6 @@
 msgid ""
 msgstr ""
-"Project-Id-Version: Vista Multipack 1.1.0\n"
+"Project-Id-Version: Vista Multipack 1.1.1\n"
 "PO-Revision-Date: 2026-07-30 00:00+0300\n"
 "Last-Translator: Vista Health\n"
 "Language-Team: Ukrainian\n"

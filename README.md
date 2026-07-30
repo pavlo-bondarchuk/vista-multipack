@@ -31,6 +31,9 @@ The saved set price remains the total for a complete set. The additional unit
 price is calculated as set total divided by set size and rounded to the store's
 currency precision.
 
+Saving a product after its set configuration changes automatically starts the
+feed plugin's own asynchronous regeneration flow.
+
 Compatibility is verified with `XML for Google Merchant Center` 4.3.0.
 Regenerate the current feed with:
 

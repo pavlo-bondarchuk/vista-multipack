@@ -5,6 +5,14 @@ defined( 'ABSPATH' ) || exit;
 final class Vista_Multipack_Feed {
 
 	const GOOGLE_NAMESPACE = 'http://base.google.com/ns/1.0';
+	const RETRY_HOOK       = 'vista_multipack_retry_feed_regeneration';
+
+	/**
+	 * Whether the current request changed a relevant product configuration.
+	 *
+	 * @var bool
+	 */
+	private static $regeneration_requested = false;
 
 	/**
 	 * Register the documented offer extension hook exposed by the feed plugin.
@@ -13,6 +21,96 @@ final class Vista_Multipack_Feed {
 	 */
 	public static function init() {
 		add_filter( 'xfgmc_f_after_simple_offer', array( __CLASS__, 'append_pack_offer' ), 20, 3 );
+		add_action( 'shutdown', array( __CLASS__, 'start_requested_regeneration' ), 20 );
+		add_action( self::RETRY_HOOK, array( __CLASS__, 'retry_feed_regeneration' ), 10, 1 );
+	}
+
+	/**
+	 * Mark the configured feeds for regeneration after product persistence.
+	 *
+	 * @return void
+	 */
+	public static function request_regeneration() {
+		self::$regeneration_requested = true;
+	}
+
+	/**
+	 * Start the feed plugin's own asynchronous generation flow.
+	 *
+	 * WooCommerce persists the product before WordPress reaches shutdown, so
+	 * the feed generator reads the new set metadata rather than the old values.
+	 *
+	 * @return void
+	 */
+	public static function start_requested_regeneration() {
+		if ( ! self::$regeneration_requested || ! has_action( 'xfgmc_cron_start_feed_creation' ) ) {
+			return;
+		}
+
+		self::$regeneration_requested = false;
+
+		foreach ( self::get_feed_ids() as $feed_id ) {
+			self::start_feed_regeneration( $feed_id, true );
+		}
+	}
+
+	/**
+	 * Retry once when a feed was already being assembled during product save.
+	 *
+	 * @param string $feed_id Feed ID.
+	 * @return void
+	 */
+	public static function retry_feed_regeneration( $feed_id ) {
+		self::start_feed_regeneration( (string) $feed_id, false );
+	}
+
+	/**
+	 * Trigger the feed plugin's generation action.
+	 *
+	 * @param string $feed_id     Feed ID.
+	 * @param bool   $allow_retry Whether one delayed retry may be scheduled.
+	 * @return void
+	 */
+	private static function start_feed_regeneration( $feed_id, $allow_retry ) {
+		if ( ! has_action( 'xfgmc_cron_start_feed_creation' ) ) {
+			return;
+		}
+
+		$status = function_exists( 'common_option_get' )
+			? (int) common_option_get( 'xfgmc_status_sborki', -1, $feed_id, 'xfgmc' )
+			: -1;
+
+		if ( -1 !== $status ) {
+			if ( $allow_retry && ! wp_next_scheduled( self::RETRY_HOOK, array( $feed_id ) ) ) {
+				wp_schedule_single_event( time() + 120, self::RETRY_HOOK, array( $feed_id ) );
+			}
+			return;
+		}
+
+		do_action( 'xfgmc_cron_start_feed_creation', $feed_id );
+	}
+
+	/**
+	 * Return IDs of feeds configured by XML for Google Merchant Center.
+	 *
+	 * @return string[]
+	 */
+	private static function get_feed_ids() {
+		$settings = function_exists( 'common_option_get' )
+			? common_option_get( 'xfgmc_settings_arr', array() )
+			: get_option( 'xfgmc_settings_arr', array() );
+		if ( ! is_array( $settings ) ) {
+			return array();
+		}
+
+		return array_values(
+			array_filter(
+				array_map( 'strval', array_keys( $settings ) ),
+				static function ( $feed_id ) {
+					return '' !== $feed_id;
+				}
+			)
+		);
 	}
 
 	/**
