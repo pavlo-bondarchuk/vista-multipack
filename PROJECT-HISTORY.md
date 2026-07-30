@@ -225,3 +225,5 @@ Status: analysis and documentation completed; executable behavior unchanged.
 - Deliberately left feed behavior unchanged until the commercial requirement is
   confirmed as either an independently purchasable unit price or a
   set-conditional unit price.
+- Published the audit and documentation to the public plugin repository's
+  `main` branch.
