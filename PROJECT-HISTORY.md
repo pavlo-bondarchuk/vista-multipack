@@ -257,3 +257,4 @@ Status: passed.
 - Regenerated and validated the Merchant XML. The standard `21626` offer
   remains, the additional `21626-set-unit-7` offer has price `857 UAH`, and
   neither offer contains `g:multipack`.
+- Published version `1.1.0` to the public plugin repository's `main` branch.
