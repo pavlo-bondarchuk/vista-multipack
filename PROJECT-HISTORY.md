@@ -304,3 +304,5 @@ Status: passed.
 - PHP syntax, translation catalog, and staged whitespace checks passed. The
   Local site was not running, so verification used the plugin's price helper
   and compiled translation output instead of a live HTTP render.
+- Published version `1.1.2` to the public plugin repository's `main` branch in
+  separate feature and documentation commits.
