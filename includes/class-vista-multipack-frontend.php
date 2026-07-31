@@ -46,7 +46,7 @@ final class Vista_Multipack_Frontend {
 			return;
 		}
 
-		$pack_display_price = Vista_Multipack_Product::get_display_price( $product, $config );
+		$unit_display_price = Vista_Multipack_Product::get_unit_display_price( $product, $config );
 		$is_pack_selected   = self::is_selected_purchase( 'pack' );
 		$is_unit_selected   = self::is_selected_purchase( 'set-unit' );
 
@@ -61,7 +61,7 @@ final class Vista_Multipack_Frontend {
 				Vista_Multipack_Product::get_unit_display_price( $product, $config )
 			);
 		} else {
-			self::render_pack_form( $product, $config, $pack_display_price );
+			self::render_pack_form( $product, $config, $unit_display_price );
 		}
 
 		echo '</div>';
@@ -161,10 +161,10 @@ final class Vista_Multipack_Frontend {
 	 *
 	 * @param WC_Product $product            Product.
 	 * @param array      $config             Pack configuration.
-	 * @param float      $pack_display_price Pack price including display tax.
+	 * @param float      $unit_display_price Unit price including display tax.
 	 * @return void
 	 */
-	private static function render_pack_form( $product, $config, $pack_display_price ) {
+	private static function render_pack_form( $product, $config, $unit_display_price ) {
 		if ( ! $config || ! $product->is_purchasable() || ! $product->is_in_stock() ) {
 			return;
 		}
@@ -182,10 +182,10 @@ final class Vista_Multipack_Frontend {
 			'<button type="submit" class="vista-multipack-button">%s</button>',
 			esc_html(
 				sprintf(
-					/* translators: 1: units in the set, 2: formatted total set price. */
-					__( 'Set (%1$d units) — %2$s', 'vista-multipack' ),
+					/* translators: 1: units in the set, 2: formatted price of one unit. */
+					__( 'Price per unit in a set of %1$d units — %2$s', 'vista-multipack' ),
 					$config['size'],
-					wp_strip_all_tags( wc_price( $pack_display_price ) )
+					wp_strip_all_tags( wc_price( $unit_display_price ) )
 				)
 			)
 		);
