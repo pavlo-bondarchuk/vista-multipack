@@ -14,6 +14,8 @@ Read the following documents before changing behavior:
 - `docs/architecture.md`
 - `docs/feed-pricing.md`
 - `docs/verification.md`
+- `docs/ui-change-log.md`
+- `docs/ui-technical-notes.md`
 - `PROJECT-HISTORY.md`
 
 ## Architecture ownership

@@ -38,6 +38,8 @@ confirmed.
 Verify the standard, complete-set, and selected set-rate unit paths:
 
 - product page shows the expected action and price;
+- complete-set button states the set size and shows the calculated per-unit
+  price, while its submission still charges the complete set total;
 - one standard-unit submission adds one real unit;
 - one set submission adds exactly the configured number of real units;
 - normal and set purchases remain separate lines;

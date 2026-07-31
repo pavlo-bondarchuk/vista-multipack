@@ -16,6 +16,10 @@ stores the real number of product units in the cart and order, so native stock
 reduction, cancellations, refunds, and order integrations continue to use unit
 quantities.
 
+The complete-set button displays the set size and its calculated per-unit
+price. The action still adds the complete set and charges the configured set
+total.
+
 Product-level stock management and an actual stock quantity must be enabled if
 WooCommerce is expected to reduce stock. The plugin does not invent or enable
 stock values for existing products.
@@ -54,4 +58,6 @@ record, and verification results.
 - [Architecture](docs/architecture.md)
 - [Google Merchant feed pricing](docs/feed-pricing.md)
 - [Verification checklist](docs/verification.md)
+- [UI change log](docs/ui-change-log.md)
+- [UI technical notes](docs/ui-technical-notes.md)
 - [Development guide](AGENTS.md)

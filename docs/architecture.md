@@ -56,6 +56,10 @@ For a seven-unit set, one customer-facing set is therefore an order quantity of
 seven. This behavior is intentional and must remain compatible with stock and
 order integrations.
 
+The complete-set button shows the configured set size and the calculated
+price of one unit within that set. This is display copy only: submitting the
+button still purchases the complete set and charges its saved total price.
+
 The feed landing URL uses `vista_purchase=set-unit`. On that selected URL:
 
 - the prominent price is the set total divided by set size;

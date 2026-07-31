@@ -282,3 +282,25 @@ Status: passed.
 - Confirmed the regenerated XML contains the standard `21626` offer and the
   `21626-set-unit-7` offer at `857 UAH`, with no `g:multipack`.
 - Published version `1.1.1` to the public plugin repository's `main` branch.
+
+## 2026-07-31 — Per-unit price in the complete-set button
+
+Status: passed.
+
+- The complete-set button currently shows the set size and the total charged
+  for the complete set.
+- The requested label will instead explain that the displayed amount is the
+  price of one unit within the configured set and will keep the set size
+  visible.
+- The button remains a complete-set purchase action; cart quantity, complete
+  set total, stock handling, and feed behavior will not change.
+- Ukrainian, Russian, and English source text will be updated together.
+- Released plugin version `1.1.2` and recompiled both translation catalogs.
+- Verified the requested five-unit example renders as
+  `Ціна за 1 од. в комплекті 5 од. — 966 грн` for a `4,830 UAH` set total.
+- Verified the Russian catalog renders the matching per-unit wording.
+- Confirmed the form still submits `vista_purchase_mode=pack`, so the purchase
+  remains a complete set and only its button copy changed.
+- PHP syntax, translation catalog, and staged whitespace checks passed. The
+  Local site was not running, so verification used the plugin's price helper
+  and compiled translation output instead of a live HTTP render.
