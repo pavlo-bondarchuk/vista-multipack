@@ -42,6 +42,7 @@
 .vista-multipack-cart-badge {
 	border: 1px solid currentColor;
 	display: inline-block;
+	width: fit-content;
 	font-size: 0.75em;
 	line-height: 1;
 	margin-inline-start: 0.35rem;
